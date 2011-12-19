@@ -1,0 +1,40 @@
+Things that will definitely be in the project:
+
+Landscape generation:
+-Perlin noise for the bottom layer (stone)
+-same procedure for dirt (leave no spaces between dirt and stone)
+-add water to all empty blocks below a certain sea level
+-do a simulation for erosion across the entire map for caves and overhangs
+-add lava to all empty blocks from bedrock level to 3 levels above the lowest empty block
+-randomly plant tree seeds on dirt blocks, if there is sunlight on that block, grow the tree, otherwise delete the seed
+
+Storage of data:
+-3D array of Blocks on memory
+
+Rendering:
+-OpenGL
+
+Lava/water Physics:
+-spread horizontally for a maximum of 8 blocks from the source block
+-spread down infinitely until the water reaches a solid block 
+
+
+
+Things we consider adding if we finish early:
+Character physics:
+-legit physics in addition to noclip
+
+Audio:
+-OpenAL
+
+Flight simulator:
+-to easily and smoothly explore the landscape
+
+Lighting:
+-16 levels of lighting (brightest to no light), nearby light levels will influence the local light level
+-light source blocks (torches) - light spreads out in a sphere, decays with distance
+-light source blocks (top of the world) - light shoots down like a wide laser beam, doesn't decay
+
+Enemies:
+-an AI (possibly an implementation of A*) to chase the player if the player is within range
+-attack by touching the player (this also means we will have to implement health, weapons, and armor)
