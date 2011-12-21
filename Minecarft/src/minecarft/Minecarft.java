@@ -23,6 +23,9 @@ public class Minecarft {
             Display.setDisplayMode(new DisplayMode(800, 600));
             Display.setTitle("Minecarft");
             Display.create();
+        } catch(UnsatisfiedLinkError e) {
+            System.out.println("Error! Make sure your run config is set to the correct OS. Exiting.");
+            System.exit(0);
         } catch (LWJGLException e) {
             e.printStackTrace();
             System.exit(0);
