@@ -54,7 +54,7 @@ public class Minecarft {
     }
 
     public void runLoop() {
-        CameraController camera = new CameraController(0.0f, -0.5f, -3.0f);
+        CameraController camera = new CameraController(0.0f, -16.0f, -3.0f);
 
         float dx = 0.0f;
         float dy = 0.0f;
@@ -107,7 +107,16 @@ public class Minecarft {
     }
     
     public void drawWorld() {
-        int[][][] world = this.world.getWorld();
+        int[][][] blocks = this.world.getWorld();
+        for (int z = 0; z < blocks.length; z++) {
+            for (int x = 0; x < blocks[0].length; x++) {
+                for (int y = 0; y < blocks[0][0].length; y++) {
+                    if (blocks[z][x][y] == 1 && this.world.isVisible(x, y, z)) {
+                        drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, z * BLOCK_SIZE);
+                    }
+                }
+            }
+        }
     }
 
     public void drawCube(float x, float y, float z) {
