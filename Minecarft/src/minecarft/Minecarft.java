@@ -122,8 +122,8 @@ public class Minecarft {
         glColor3f(1.0f, 0.0f, 0.0f);	// Color Red	
         glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Right Of The Quad (Front)
         glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Left Of The Quad (Front)
-        glVertex3f(x - BLOCK_SIZE/2, y + 0.0f, z + BLOCK_SIZE/2);	// Bottom Left Of The Quad (Front)
-        glVertex3f(x + BLOCK_SIZE/2, y + 0.0f, z + BLOCK_SIZE/2);	// Bottom Right Of The Quad (Front)
+        glVertex3f(x - BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Left Of The Quad (Front)
+        glVertex3f(x + BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Right Of The Quad (Front)
         glColor3f(1.0f, 1.0f, 0.0f);	// Color Yellow
         glVertex3f(x + BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Top Right Of The Quad (Back)
         glVertex3f(x - BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Top Left Of The Quad (Back)
