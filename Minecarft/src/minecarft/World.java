@@ -15,11 +15,15 @@ public class World {
     public int[][][] world;
     
     public World() {
-        world = new int[X][Y][Z];
+        world = new int[Z][X][Y];
         // Generate terrain and fill world array
     }
     
     public int[][][] getWorld() {
         return world;
+    }
+    
+    public boolean isVisible(int x, int y, int z) {
+        return true;
     }
 }

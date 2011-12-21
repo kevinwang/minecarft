@@ -18,6 +18,8 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Minecarft {
     public static final float BLOCK_SIZE = 0.25f;
+    
+    World world = new World();
 
     public void start() {
         try {
@@ -92,11 +94,8 @@ public class Minecarft {
 
             // Begin drawing
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            drawCube(0, 0, 0);
-            drawCube(0.25f, 0, 0);
-            drawCube(0.25f, 0.25f, 0);
-            drawCube(0.25f, 0.5f, 0);
+            
+            drawWorld();
             
             glLoadIdentity();
             
@@ -105,6 +104,10 @@ public class Minecarft {
             Display.update();
             Display.sync(60);
         }
+    }
+    
+    public void drawWorld() {
+        int[][][] world = this.world.getWorld();
     }
 
     public void drawCube(float x, float y, float z) {
