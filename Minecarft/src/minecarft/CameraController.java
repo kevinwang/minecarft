@@ -26,6 +26,8 @@ public class CameraController {
     
     public void pitch(float amount) {
         pitch += amount;
+        pitch = pitch < -90 ? -90 : pitch;
+        pitch = pitch > 90 ? 90 : pitch;
     }
     
     public void walkForward(float distance) {
