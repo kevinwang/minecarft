@@ -104,6 +104,7 @@ public class Minecarft {
     }
 
     // TODO: Implement params
+    // TODO: Make cube smaller
     public void drawCube(float x, float y, float z) {
         glBegin(GL_QUADS);		// Draw The Cube Using quads
         glColor3f(0.0f, 1.0f, 0.0f);	// Color Blue
