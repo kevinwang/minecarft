@@ -4,12 +4,15 @@
  */
 package minecarft;
 
+import java.io.FileInputStream;
+import org.newdawn.slick.opengl.Texture;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
+import org.newdawn.slick.opengl.TextureLoader;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -20,6 +23,10 @@ public class Minecarft {
     public static final float BLOCK_SIZE = 0.25f;
     
     World world = new World();
+    
+    Texture dirtTexture;
+    Texture dirtGrassTexture;
+    Texture grassTexture;
 
     public void start() {
         try {
@@ -47,10 +54,25 @@ public class Minecarft {
         glEnable(GL_DEPTH_TEST);						// Enables Depth Testing
         glDepthFunc(GL_LEQUAL);						// The Type Of Depth Testing To Do
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+        
+        initTextures();
 
         runLoop();
 
         Display.destroy();
+    }
+    
+    public void initTextures() {
+        glEnable(GL_TEXTURE_2D);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); 
+        try {
+            dirtTexture = TextureLoader.getTexture("PNG", new FileInputStream("dirt.png"));
+            dirtGrassTexture = TextureLoader.getTexture("PNG", new FileInputStream("dirt_grass.png"));
+            grassTexture = TextureLoader.getTexture("PNG", new FileInputStream("grass.png"));
+        } catch (Exception e) {
+            System.out.println("Error! Could not load textures.");
+            System.exit(0);
+        }
     }
 
     public void runLoop() {
@@ -107,12 +129,12 @@ public class Minecarft {
     }
     
     public void drawWorld() {
-        int[][][] blocks = this.world.getWorld();
+        int[][][] blocks = world.getWorld();
         for (int z = 0; z < blocks.length; z++) {
             for (int x = 0; x < blocks[0].length; x++) {
                 for (int y = 0; y < blocks[0][0].length; y++) {
-                    if (blocks[z][x][y] == 1 && this.world.isVisible(x, y, z)) {
-                        drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, z * BLOCK_SIZE);
+                    if (blocks[z][x][y] == 1 && world.isVisible(x, y, z)) {
+                        drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE);
                     }
                 }
             }
@@ -120,37 +142,66 @@ public class Minecarft {
     }
 
     public void drawCube(float x, float y, float z) {
+        grassTexture.bind();
         glBegin(GL_QUADS);		// Draw The Cube Using quads
-        glColor3f(0.0f, 1.0f, 0.0f);	// Color Blue
+//        glColor3f(0.0f, 1.0f, 0.0f);	// Color Blue
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Top Right Of The Quad (Top)
+        glTexCoord2f(0.0f, 1.0f);
         glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Top Left Of The Quad (Top)
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Bottom Left Of The Quad (Top)
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Bottom Right Of The Quad (Top)
-        glColor3f(1.0f, BLOCK_SIZE/2, 0.0f);	// Color Orange
+//        glColor3f(1.0f, 0.5f, 0.0f);	// Color Orange
+        glEnd();
+        dirtGrassTexture.bind();
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Top Right Of The Quad (Bottom)
+        glTexCoord2f(0.0f, 1.0f);
         glVertex3f(x - BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Top Left Of The Quad (Bottom)
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3f(x - BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Bottom Left Of The Quad (Bottom)
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Bottom Right Of The Quad (Bottom)
-        glColor3f(1.0f, 0.0f, 0.0f);	// Color Red	
+//        glColor3f(1.0f, 0.0f, 0.0f);	// Color Red
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Right Of The Quad (Front)
+        glTexCoord2f(0.0f, 1.0f);
         glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Left Of The Quad (Front)
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3f(x - BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Left Of The Quad (Front)
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Right Of The Quad (Front)
-        glColor3f(1.0f, 1.0f, 0.0f);	// Color Yellow
+//        glColor3f(1.0f, 1.0f, 0.0f);	// Color Yellow
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Top Right Of The Quad (Back)
+        glTexCoord2f(0.0f, 1.0f);
         glVertex3f(x - BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Top Left Of The Quad (Back)
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Bottom Left Of The Quad (Back)
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Bottom Right Of The Quad (Back)
-        glColor3f(0.0f, 0.0f, 1.0f);	// Color Blue
+//        glColor3f(0.0f, 0.0f, 1.0f);	// Color Blue
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Right Of The Quad (Left)
+        glTexCoord2f(0.0f, 1.0f);
         glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Top Left Of The Quad (Left)
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3f(x - BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Bottom Left Of The Quad (Left)
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3f(x - BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Right Of The Quad (Left)
-        glColor3f(1.0f, 0.0f, 1.0f);	// Color Violet
+//        glColor3f(1.0f, 0.0f, 1.0f);	// Color Violet
         glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Top Right Of The Quad (Right)
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Left Of The Quad (Right)
+        glTexCoord2f(0.0f, 1.0f);
         glVertex3f(x + BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Left Of The Quad (Right)
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3f(x + BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Bottom Right Of The Quad (Right)
+        glTexCoord2f(1.0f, 0.0f);
         glEnd();
     }
 
