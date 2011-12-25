@@ -36,6 +36,11 @@ import static org.lwjgl.opengl.GL11.*;
  * @author Kevin Wang
  */
 public class Minecarft {
+    public static final int DISPLAY_WIDTH = 800;
+    public static final int DISPLAY_HEIGHT = 600;
+    public static final int DISPLAY_FREQUENCY = 60;
+    public static final boolean DISPLAY_FULLSCREEN = false;
+    
     public static final float BLOCK_SIZE = 0.25f;
     
     World world = new World();
@@ -47,7 +52,27 @@ public class Minecarft {
 
     public void start() {
         try {
-            Display.setDisplayMode(new DisplayMode(800, 600));
+            DisplayMode[] modes = Display.getAvailableDisplayModes();
+            boolean isDisplayConfigured = false;
+            
+            for (int i = 0; i < modes.length; i++) {
+                if (modes[i].getWidth() == DISPLAY_WIDTH && modes[i].getHeight() == DISPLAY_HEIGHT && modes[i].getFrequency() == DISPLAY_FREQUENCY) {
+                    if (DISPLAY_FULLSCREEN) {
+                        Display.setDisplayModeAndFullscreen(modes[i]);
+                    }
+                    else {
+                        Display.setDisplayMode(modes[i]);
+                    }
+                    isDisplayConfigured = true;
+                }
+            }
+            if (!isDisplayConfigured) {
+                if (DISPLAY_FULLSCREEN) {
+                    System.out.println("Fullscreen is not supported on your system at " + DISPLAY_WIDTH + "x" + DISPLAY_HEIGHT + " " + DISPLAY_FREQUENCY + "Hz.\n"
+                            + "Running in windowed mode.");
+                }
+                Display.setDisplayMode(new DisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT));
+            }
             Display.setTitle("Minecarft");
             Display.create();
         } catch(UnsatisfiedLinkError e) {
@@ -58,11 +83,11 @@ public class Minecarft {
             System.exit(0);
         }
 
-        glViewport(0, 0, 800, 600);
+        glViewport(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        GLU.gluPerspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
+        GLU.gluPerspective(45.0f, (float)DISPLAY_WIDTH / (float)DISPLAY_HEIGHT, 0.1f, 100.0f);
         glMatrixMode(GL_MODELVIEW);
 
         glShadeModel(GL_SMOOTH);						// Enable Smooth Shading
@@ -122,14 +147,20 @@ public class Minecarft {
             if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
                 camera.walkForward(movementSpeed * dt);
             }
-            if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+            else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
                 camera.walkBackwards(movementSpeed * dt);
+            }
+            else {
+                camera.slowDownFwdRev(movementSpeed * dt);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
                 camera.strafeLeft(movementSpeed * dt);
             }
-            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+            else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
                 camera.strafeRight(movementSpeed * dt);
+            }
+            else {
+                camera.slowDownStrafe(movementSpeed * dt);
             }
 
             // Begin drawing
