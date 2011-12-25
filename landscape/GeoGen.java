@@ -83,10 +83,10 @@ public class GeoGen{
 	    for(int i = 0; i < LENGTH; i+=h){ //x axis
 		for(int j= 0; j < WIDTH; j+=h){ //y axis
 		    int m,n,o,p;
-		    m = i-((r.nextInt(5)-2)+h);
-		    n = j-((r.nextInt(5)-2)+h);
-		    o = i+((r.nextInt(5)-2)+h);
-		    p = j+((r.nextInt(5)-2)+h);
+		    m = i-h;
+		    n = j-h;
+		    o = i+h;
+		    p = j+h;
 		    if(m<0){m=0;}
 		    if(n<0){n=0;}
 		    if(o>LENGTH){o=LENGTH;}
@@ -94,7 +94,7 @@ public class GeoGen{
 		    int q = r.nextInt(h/2 + 1);
 		    for(int k = m; k < o; k++){
 			for(int l = n; l < p; l++){
-			    tmp[k][l] += q*65793;
+			    tmp[k][l] += q*65793;//grayscale
 			}
 		    }
 		}
