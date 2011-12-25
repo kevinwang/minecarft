@@ -53,42 +53,42 @@ public class CameraController {
     }
     
     public void walkForward(float acceleration) {
-        vFwdRev = vFwdRev > acceleration ? acceleration : vFwdRev + acceleration / 10;
+        vFwdRev = vFwdRev > acceleration ? acceleration : vFwdRev + acceleration / 5;
     }
     
     public void walkBackwards(float acceleration) {
-        vFwdRev = vFwdRev < -acceleration ? -acceleration : vFwdRev - acceleration / 10;
+        vFwdRev = vFwdRev < -acceleration ? -acceleration : vFwdRev - acceleration / 5;
     }
     
     public void slowDownFwdRev(float acceleration) {
-        if (Math.abs(vFwdRev) < 0.01f) {
+        if (Math.abs(vFwdRev) < 0.03f) {
             vFwdRev = 0.0f;
         }
         if (vFwdRev > 0.0f) {
-            vFwdRev -= acceleration / 10;
+            vFwdRev -= acceleration / 5;
         }
         else if (vFwdRev < 0.0f) {
-            vFwdRev += acceleration / 10;
+            vFwdRev += acceleration / 5;
         }
     }
     
     public void strafeLeft(float acceleration) {
-        vStrafe = vStrafe > acceleration ? acceleration : vStrafe + acceleration / 10;
+        vStrafe = vStrafe > acceleration ? acceleration : vStrafe + acceleration / 5;
     }
     
     public void strafeRight(float acceleration) {
-        vStrafe = vStrafe < -acceleration ? -acceleration : vStrafe - acceleration / 10;
+        vStrafe = vStrafe < -acceleration ? -acceleration : vStrafe - acceleration / 5;
     }
     
     public void slowDownStrafe(float acceleration) {
-        if (Math.abs(vStrafe) < 0.01f) {
+        if (Math.abs(vStrafe) < 0.03f) {
             vStrafe = 0.0f;
         }
         if (vStrafe > 0.0f) {
-            vStrafe -= acceleration / 10;
+            vStrafe -= acceleration / 5;
         }
         else if (vStrafe < 0.0f) {
-            vStrafe += acceleration / 10;
+            vStrafe += acceleration / 5;
         }
     }
     
