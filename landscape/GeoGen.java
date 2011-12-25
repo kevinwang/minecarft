@@ -1,4 +1,7 @@
 import java.util.*;
+import java.io.*;
+import java.awt.image.*;
+import javax.imageio.*;
 public class GeoGen{
     public final int LENGTH = 256;
     public final int WIDTH = 256;
@@ -11,11 +14,24 @@ public class GeoGen{
 	generate(r.nextInt());
 	*/
 	int[][] world = perlinNoise();
+	/*
 	for(int i = 0; i < LENGTH; i++){
 	    for(int j = 0; j< WIDTH; j++){
 		System.out.print(world[i][j]);
 	    }
 	    System.out.println();
+	}
+	*/
+	BufferedImage theImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_GRAYSCALE);
+	for(int y = 0; y<256; y++){
+	    for(int x = 0; x<256; x++){
+		theImage.setRGB(x, y, world[y][x]);
+	    }
+	}
+	try {
+	    File outputfile = new File("saved.png");
+	    ImageIO.write(theImage, "png", outputfile);
+	} catch (IOException e) {
 	}
     }
     public GeoGen(int s){
@@ -76,7 +92,7 @@ public class GeoGen{
 		    if(p>WIDTH){p=WIDTH;}
 		    for(int k = m; k < o; k++){
 			for(int l = n; l < p; l++){
-			    tmp[k][l] = r.nextInt((int)(h/2));
+			    tmp[k][l] += r.nextInt(2);
 			}
 		    }
 		}
