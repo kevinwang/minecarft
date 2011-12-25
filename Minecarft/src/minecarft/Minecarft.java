@@ -122,14 +122,20 @@ public class Minecarft {
             if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
                 camera.walkForward(movementSpeed * dt);
             }
-            if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+            else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
                 camera.walkBackwards(movementSpeed * dt);
+            }
+            else {
+                camera.slowDownFwdRev();
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
                 camera.strafeLeft(movementSpeed * dt);
             }
-            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+            else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
                 camera.strafeRight(movementSpeed * dt);
+            }
+            else {
+                camera.slowDownStrafe();
             }
 
             // Begin drawing

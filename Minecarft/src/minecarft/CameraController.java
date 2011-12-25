@@ -31,6 +31,11 @@ public class CameraController {
     private Vector3f position = null;
     private float yaw = 0.0f;
     private float pitch = 0.0f;
+    
+    // Camera velocity components
+    private float vFwdRev = 0.0f;
+    private float vStrafe = 0.0f;
+    
     private boolean noclip = true;
     
     public CameraController(float x, float y, float z) {
@@ -48,43 +53,67 @@ public class CameraController {
     }
     
     public void walkForward(float distance) {
-        float dx = distance * (float) Math.sin(Math.toRadians(yaw));
-        float dz = distance * (float) Math.cos(Math.toRadians(yaw));
-        if (noclip) {
-            dx *= (float) Math.cos(Math.toRadians(pitch));
-            dz *= (float) Math.cos(Math.toRadians(pitch));
-            position.y += distance * (float) Math.sin(Math.toRadians(pitch));
-        }
-        position.x -= dx;
-        position.z += dz;
+        vFwdRev = vFwdRev > distance ? distance : vFwdRev + 0.1f;
     }
     
     public void walkBackwards(float distance) {
-        float dx = distance * (float) Math.sin(Math.toRadians(yaw));
-        float dz = distance * (float) Math.cos(Math.toRadians(yaw));
-        if (noclip) {
-            dx *= (float) Math.cos(Math.toRadians(pitch));
-            dz *= (float) Math.cos(Math.toRadians(pitch));
-            position.y -= distance * (float) Math.sin(Math.toRadians(pitch));
+        vFwdRev = vFwdRev < -distance ? -distance : vFwdRev - 0.1f;
+    }
+    
+    public void slowDownFwdRev() {
+        if (Math.abs(vFwdRev) < 0.1f) {
+            vFwdRev = 0.0f;
         }
-        position.x += dx;
-        position.z -= dz;
+        if (vFwdRev > 0.0f) {
+            vFwdRev -= 0.1f;
+        }
+        else if (vFwdRev < 0.0f) {
+            vFwdRev += 0.1f;
+        }
     }
     
     public void strafeLeft(float distance) {
-        position.x -= distance * (float) Math.sin(Math.toRadians(yaw - 90));
-        position.z += distance * (float) Math.cos(Math.toRadians(yaw - 90));
+        vStrafe = vStrafe > distance ? distance : vStrafe + 0.1f;
     }
     
     public void strafeRight(float distance) {
-        position.x -= distance * (float) Math.sin(Math.toRadians(yaw + 90));
-        position.z += distance * (float) Math.cos(Math.toRadians(yaw + 90));
+        vStrafe = vStrafe < -distance ? -distance : vStrafe - 0.1f;
+    }
+    
+    public void slowDownStrafe() {
+        if (Math.abs(vStrafe) < 0.1f) {
+            vStrafe = 0.0f;
+        }
+        if (vStrafe > 0.0f) {
+            vStrafe -= 0.1f;
+        }
+        else if (vStrafe < 0.0f) {
+            vStrafe += 0.1f;
+        }
     }
     
     public void lookThrough() {
+        // Move camrea forward/backward
+        float dx = vFwdRev * (float) Math.sin(Math.toRadians(yaw));
+        float dz = vFwdRev * (float) Math.cos(Math.toRadians(yaw));
+        if (noclip) {
+            dx *= (float) Math.cos(Math.toRadians(pitch));
+            dz *= (float) Math.cos(Math.toRadians(pitch));
+            position.y += vFwdRev * (float) Math.sin(Math.toRadians(pitch));
+        }
+        position.x -= dx;
+        position.z += dz;
+        
+        // Strafe camera
+        position.x -= vStrafe * (float) Math.sin(Math.toRadians(yaw - 90));
+        position.z += vStrafe * (float) Math.cos(Math.toRadians(yaw - 90));
+        
+        // Apply camera changes to OpenGL matrix
         glRotatef(pitch, 1.0f, 0.0f, 0.0f);
         glRotatef(yaw, 0.0f, 1.0f, 0.0f);
         glTranslatef(position.x, position.y, position.z);
-        System.out.println("x = " + position.x + " y = " + position.y + " z = " + position.z + " yaw = " + yaw + " pitch = " + pitch);
+        
+        // Print debug info
+        System.out.println("x = " + position.x + " y = " + position.y + " z = " + position.z + " yaw = " + yaw + " pitch = " + pitch + " vFwdRev = " + vFwdRev + " vStrafe = " + vStrafe);
     }
 }
