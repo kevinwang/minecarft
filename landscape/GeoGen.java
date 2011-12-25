@@ -22,16 +22,16 @@ public class GeoGen{
 	    System.out.println();
 	}
 	*/
-	BufferedImage theImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_GRAYSCALE);
+	BufferedImage theImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
 	for(int y = 0; y<256; y++){
 	    for(int x = 0; x<256; x++){
 		theImage.setRGB(x, y, world[y][x]);
 	    }
 	}
-	try {
-	    File outputfile = new File("saved.png");
-	    ImageIO.write(theImage, "png", outputfile);
-	} catch (IOException e) {
+	try{
+	    File outputfile = new File("saved.bmp");
+	    ImageIO.write(theImage, "bmp", outputfile);
+	}catch(IOException e){
 	}
     }
     public GeoGen(int s){
@@ -78,35 +78,48 @@ public class GeoGen{
 	Random r = new Random();
 	int [][] ret,tmp;
 	tmp = ret = new int[LENGTH][WIDTH];
-	for(int h = 16; h > 0; h--){ //4 iterations
+	for(int h = 64; h > 0; h=h/2){ //buncha iterations
+	    tmp = new int[LENGTH][WIDTH];
 	    for(int i = 0; i < LENGTH; i+=h){ //x axis
 		for(int j= 0; j < WIDTH; j+=h){ //y axis
 		    int m,n,o,p;
-		    m = i-h;
-		    n = j-h;
-		    o = i+h;
-		    p = j+h;
+		    m = i-((r.nextInt(5)-2)+h);
+		    n = j-((r.nextInt(5)-2)+h);
+		    o = i+((r.nextInt(5)-2)+h);
+		    p = j+((r.nextInt(5)-2)+h);
 		    if(m<0){m=0;}
 		    if(n<0){n=0;}
 		    if(o>LENGTH){o=LENGTH;}
 		    if(p>WIDTH){p=WIDTH;}
+		    int q = r.nextInt(h/2 + 1);
 		    for(int k = m; k < o; k++){
 			for(int l = n; l < p; l++){
-			    tmp[k][l] += r.nextInt(2);
+			    tmp[k][l] += q*65793;
 			}
 		    }
 		}
 	    }
-	    for(int i = 0; i < 32; i++){
-		for(int j = 0; j < 32; j++){
+	    for(int i = 0; i < LENGTH; i++){
+		for(int j = 0; j < WIDTH; j++){
 		    ret[i][j] += tmp[i][j];
 		}
+	    }
+	    BufferedImage temporary = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
+	    for(int y = 0; y<256; y++){
+		for(int x = 0; x<256; x++){
+		    temporary.setRGB(x, y, tmp[y][x]);
+		}
+	}
+	    try {
+		File output = new File(h + ".bmp");
+		ImageIO.write(temporary, "bmp", output);
+	    } catch (IOException e) {
 	    }
 	}
 	return ret;
     }
     /*
-    public String toString(int lvl){
+      public String toString(int lvl){
 	for(int i = 0; i < 32; i++){
 	    for(int j = 0; j < 32; j++){
 		System.out.println(world[i][j][lvl]);
