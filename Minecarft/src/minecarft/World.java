@@ -31,7 +31,7 @@ public class World {
             for (int x = 0; x < world[0].length; x++) {
                 for (int y = 0; y < world[0][0].length; y++) {
                     if (r.nextInt(1000) == 0) {
-                        world[z][x][y] = 2;
+                        world[z][x][y] = r.nextInt(3);
                     }
                 }
             }

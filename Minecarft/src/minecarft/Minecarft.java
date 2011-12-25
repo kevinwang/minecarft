@@ -67,6 +67,7 @@ public class Minecarft {
         glEnable(GL_TEXTURE_2D);
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); 
         try {
+            stoneTexture = TextureLoader.getTexture("PNG", new FileInputStream("stone.png"));
             dirtTexture = TextureLoader.getTexture("PNG", new FileInputStream("dirt.png"));
             dirtGrassTexture = TextureLoader.getTexture("PNG", new FileInputStream("dirt_grass.png"));
             grassTexture = TextureLoader.getTexture("PNG", new FileInputStream("grass.png"));
