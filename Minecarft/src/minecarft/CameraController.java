@@ -69,6 +69,6 @@ public class CameraController {
         glRotatef(pitch, 1.0f, 0.0f, 0.0f);
         glRotatef(yaw, 0.0f, 1.0f, 0.0f);
         glTranslatef(position.x, position.y, position.z);
-        System.out.println("x = " + position.x + " y = " + position.y + " z = " + position.z + " yaw = " + yaw + "pitch = " + pitch);
+        System.out.println("x = " + position.x + " y = " + position.y + " z = " + position.z + " yaw = " + yaw + " pitch = " + pitch);
     }
 }
