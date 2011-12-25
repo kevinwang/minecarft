@@ -14,6 +14,13 @@ public class World {
     public static final int X = 128;
     public static final int Y = 128;
     public static final int Z = 128;
+    
+    public static final int TYPE_AIR = 0;
+    public static final int TYPE_STONE = 1;
+    public static final int TYPE_DIRT = 2;
+    public static final int TYPE_DIRT_GRASS = 1336; // Special type for rendering, not in array
+    public static final int TYPE_BEDROCK = 1337;
+    
     public int[][][] world;
     
     public World() {
@@ -24,7 +31,7 @@ public class World {
             for (int x = 0; x < world[0].length; x++) {
                 for (int y = 0; y < world[0][0].length; y++) {
                     if (r.nextInt(1000) == 0) {
-                        world[z][x][y] = 1;
+                        world[z][x][y] = 2;
                     }
                 }
             }

@@ -24,6 +24,7 @@ public class Minecarft {
     
     World world = new World();
     
+    Texture stoneTexture;
     Texture dirtTexture;
     Texture dirtGrassTexture;
     Texture grassTexture;
@@ -133,18 +134,35 @@ public class Minecarft {
         for (int z = 0; z < blocks.length; z++) {
             for (int x = 0; x < blocks[0].length; x++) {
                 for (int y = 0; y < blocks[0][0].length; y++) {
-                    if (blocks[z][x][y] == 1 && world.isVisible(x, y, z)) {
-                        drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE);
+                    int block = blocks[z][x][y];
+                    if (block != World.TYPE_AIR && world.isVisible(x, y, z)) {
+                        if (block == World.TYPE_DIRT && (y == World.Y - 1 || blocks[z][x][y + 1] == World.TYPE_AIR)) {
+                            drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE, World.TYPE_DIRT_GRASS);
+                        }
+                        else {
+                            drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE, block);
+}
                     }
                 }
             }
         }
     }
 
-    public void drawCube(float x, float y, float z) {
-        grassTexture.bind();
+    public void drawCube(float x, float y, float z, int type) {
+        switch (type) {
+            case World.TYPE_STONE:
+                stoneTexture.bind();
+                break;
+            case World.TYPE_DIRT:
+                dirtTexture.bind();
+                break;
+            case World.TYPE_DIRT_GRASS:
+                grassTexture.bind();
+                break;
+        }
+        
         glBegin(GL_QUADS);		// Draw The Cube Using quads
-//        glColor3f(0.0f, 1.0f, 0.0f);	// Color Blue
+        
         glColor3f(1.0f, 1.0f, 1.0f);
         glTexCoord2f(0.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Top Right Of The Quad (Top)
@@ -154,10 +172,13 @@ public class Minecarft {
         glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Bottom Left Of The Quad (Top)
         glTexCoord2f(1.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Bottom Right Of The Quad (Top)
-//        glColor3f(1.0f, 0.5f, 0.0f);	// Color Orange
-        glEnd();
-        dirtGrassTexture.bind();
-        glBegin(GL_QUADS);
+//      
+        if (type == World.TYPE_DIRT_GRASS) {
+            glEnd();
+            dirtTexture.bind();
+            glBegin(GL_QUADS);
+        }
+        
         glTexCoord2f(0.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Top Right Of The Quad (Bottom)
         glTexCoord2f(0.0f, 1.0f);
@@ -166,34 +187,41 @@ public class Minecarft {
         glVertex3f(x - BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Bottom Left Of The Quad (Bottom)
         glTexCoord2f(1.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Bottom Right Of The Quad (Bottom)
-//        glColor3f(1.0f, 0.0f, 0.0f);	// Color Red
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Right Of The Quad (Front)
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Left Of The Quad (Front)
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(x - BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Left Of The Quad (Front)
+
+        if (type == World.TYPE_DIRT_GRASS) {
+            glEnd();
+            dirtGrassTexture.bind();
+            glBegin(GL_QUADS);
+        }
+        
         glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(x + BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Right Of The Quad (Front)
-//        glColor3f(1.0f, 1.0f, 0.0f);	// Color Yellow
+        glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Right Of The Quad (Front)
         glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Left Of The Quad (Front)
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex3f(x - BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Left Of The Quad (Front)
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex3f(x + BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Right Of The Quad (Front)
+        
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3f(x + BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Top Right Of The Quad (Back)
         glTexCoord2f(0.0f, 1.0f);
         glVertex3f(x - BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Top Left Of The Quad (Back)
-        glTexCoord2f(1.0f, 1.0f);
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Bottom Left Of The Quad (Back)
         glTexCoord2f(1.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Bottom Right Of The Quad (Back)
-//        glColor3f(0.0f, 0.0f, 1.0f);	// Color Blue
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Right Of The Quad (Left)
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Top Left Of The Quad (Left)
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(x - BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Bottom Left Of The Quad (Left)
+        
         glTexCoord2f(1.0f, 0.0f);
+        glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Right Of The Quad (Left)
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(x - BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Top Left Of The Quad (Left)
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex3f(x - BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Bottom Left Of The Quad (Left)
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3f(x - BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Right Of The Quad (Left)
-//        glColor3f(1.0f, 0.0f, 1.0f);	// Color Violet
+        
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Top Right Of The Quad (Right)
         glTexCoord2f(0.0f, 0.0f);
         glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Top Left Of The Quad (Right)
@@ -201,7 +229,6 @@ public class Minecarft {
         glVertex3f(x + BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Left Of The Quad (Right)
         glTexCoord2f(1.0f, 1.0f);
         glVertex3f(x + BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Bottom Right Of The Quad (Right)
-        glTexCoord2f(1.0f, 0.0f);
         glEnd();
     }
 
