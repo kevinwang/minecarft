@@ -52,43 +52,43 @@ public class CameraController {
         pitch = pitch > 90 ? 90 : pitch;
     }
     
-    public void walkForward(float distance) {
-        vFwdRev = vFwdRev > distance ? distance : vFwdRev + 0.1f;
+    public void walkForward(float acceleration) {
+        vFwdRev = vFwdRev > acceleration ? acceleration : vFwdRev + acceleration / 10;
     }
     
-    public void walkBackwards(float distance) {
-        vFwdRev = vFwdRev < -distance ? -distance : vFwdRev - 0.1f;
+    public void walkBackwards(float acceleration) {
+        vFwdRev = vFwdRev < -acceleration ? -acceleration : vFwdRev - acceleration / 10;
     }
     
-    public void slowDownFwdRev() {
-        if (Math.abs(vFwdRev) < 0.1f) {
+    public void slowDownFwdRev(float acceleration) {
+        if (Math.abs(vFwdRev) < 0.01f) {
             vFwdRev = 0.0f;
         }
         if (vFwdRev > 0.0f) {
-            vFwdRev -= 0.1f;
+            vFwdRev -= acceleration / 10;
         }
         else if (vFwdRev < 0.0f) {
-            vFwdRev += 0.1f;
+            vFwdRev += acceleration / 10;
         }
     }
     
-    public void strafeLeft(float distance) {
-        vStrafe = vStrafe > distance ? distance : vStrafe + 0.1f;
+    public void strafeLeft(float acceleration) {
+        vStrafe = vStrafe > acceleration ? acceleration : vStrafe + acceleration / 10;
     }
     
-    public void strafeRight(float distance) {
-        vStrafe = vStrafe < -distance ? -distance : vStrafe - 0.1f;
+    public void strafeRight(float acceleration) {
+        vStrafe = vStrafe < -acceleration ? -acceleration : vStrafe - acceleration / 10;
     }
     
-    public void slowDownStrafe() {
-        if (Math.abs(vStrafe) < 0.1f) {
+    public void slowDownStrafe(float acceleration) {
+        if (Math.abs(vStrafe) < 0.01f) {
             vStrafe = 0.0f;
         }
         if (vStrafe > 0.0f) {
-            vStrafe -= 0.1f;
+            vStrafe -= acceleration / 10;
         }
         else if (vStrafe < 0.0f) {
-            vStrafe += 0.1f;
+            vStrafe += acceleration / 10;
         }
     }
     

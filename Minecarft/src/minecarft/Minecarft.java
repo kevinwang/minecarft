@@ -126,7 +126,7 @@ public class Minecarft {
                 camera.walkBackwards(movementSpeed * dt);
             }
             else {
-                camera.slowDownFwdRev();
+                camera.slowDownFwdRev(movementSpeed * dt);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
                 camera.strafeLeft(movementSpeed * dt);
@@ -135,7 +135,7 @@ public class Minecarft {
                 camera.strafeRight(movementSpeed * dt);
             }
             else {
-                camera.slowDownStrafe();
+                camera.slowDownStrafe(movementSpeed * dt);
             }
 
             // Begin drawing
