@@ -114,6 +114,6 @@ public class CameraController {
         glTranslatef(position.x, position.y, position.z);
         
         // Print debug info
-        System.out.println("x = " + position.x + " y = " + position.y + " z = " + position.z + " yaw = " + yaw + " pitch = " + pitch + " vFwdRev = " + vFwdRev + " vStrafe = " + vStrafe);
+//        System.out.println("x = " + position.x + " y = " + position.y + " z = " + position.z + " yaw = " + yaw + " pitch = " + pitch + " vFwdRev = " + vFwdRev + " vStrafe = " + vStrafe);
     }
 }
