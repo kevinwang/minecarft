@@ -32,6 +32,7 @@ public class World {
     public static final int TYPE_AIR = 0;
     public static final int TYPE_STONE = 1;
     public static final int TYPE_DIRT = 2;
+    public static final int TYPE_WATER = 10;
     public static final int TYPE_DIRT_GRASS = 1336; // Special type for rendering, not in array
     public static final int TYPE_BEDROCK = 1337;
     

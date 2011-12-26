@@ -52,6 +52,7 @@ public class Minecarft {
     Texture stoneTexture;
     Texture dirtTexture;
     Texture dirtGrassTexture;
+    Texture waterTexture;
     Texture grassTexture;
     Texture bedrockTexture;
 
@@ -118,6 +119,7 @@ public class Minecarft {
             stoneTexture = TextureLoader.getTexture("PNG", new FileInputStream("stone.png"));
             dirtTexture = TextureLoader.getTexture("PNG", new FileInputStream("dirt.png"));
             dirtGrassTexture = TextureLoader.getTexture("PNG", new FileInputStream("dirt_grass.png"));
+            waterTexture = TextureLoader.getTexture("PNG", new FileInputStream("water.png"));
             grassTexture = TextureLoader.getTexture("PNG", new FileInputStream("grass.png"));
             bedrockTexture = TextureLoader.getTexture("PNG", new FileInputStream("bedrock.png"));
         } catch (Exception e) {
@@ -215,6 +217,9 @@ public class Minecarft {
                 break;
             case World.TYPE_DIRT:
                 dirtTexture.bind();
+                break;
+            case World.TYPE_WATER:
+                waterTexture.bind();
                 break;
             case World.TYPE_DIRT_GRASS:
                 grassTexture.bind();
