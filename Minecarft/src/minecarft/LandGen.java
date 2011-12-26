@@ -71,7 +71,7 @@ public class LandGen {
     }
 
     private void placeStone(){
-        int[][] perlin = perlinNoise(14);
+        int[][] perlin = perlinNoise(12);
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 for(int k = 1; k < perlin[i][j]+1; k++){
@@ -82,7 +82,7 @@ public class LandGen {
     }
     
     private void placeDirt(){
-        int[][] perlin = perlinNoise(5);
+        int[][] perlin = perlinNoise(3);
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 lab:for(int k = 0; k < height; k++){
