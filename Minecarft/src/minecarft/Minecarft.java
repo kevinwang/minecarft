@@ -43,7 +43,7 @@ public class Minecarft {
     
     public static final float BLOCK_SIZE = 0.15f;
     
-    public static final float RENDER_DISTANCE = 15.0f;
+    public static final float RENDER_DISTANCE = 10.0f;
     
     private Player player;
     
@@ -136,7 +136,7 @@ public class Minecarft {
         long time = 0;
 
         float mouseSensitivity = 0.1f;
-        float movementSpeed = 5.0f;
+        float movementSpeed = 2.0f;
 
         Mouse.setGrabbed(true);
 
