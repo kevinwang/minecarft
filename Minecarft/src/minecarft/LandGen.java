@@ -11,14 +11,17 @@ import java.util.Random;
  * @author sshi
  */
 public class LandGen {
-    public final int LENGTH = 128;
-    public final int WIDTH = 128;
-    public final int HEIGHT = 128;
-    int[][][] world;
+    private int length = 128;
+    private int width = 128;
+    private int height = 128;
+    private int[][][] world;
     
-    public LandGen(){
+    public LandGen(int length, int width, int height){
         Random r = new Random();
-        world = new int[LENGTH][WIDTH][HEIGHT];
+        world = new int[length][width][height];
+        this.length = length;
+        this.width = width;
+        this.height = height;
         generate();
     }
     
@@ -44,19 +47,19 @@ public class LandGen {
       bedrock = 1337                                                                                    
      */
     private void placeBedrock(){
-        for(int i = 0; i < LENGTH; i++){
-            for(int j = 0; j < WIDTH; j++){
-                world[i][j][0] = 1337;
+        for(int i = 0; i < length; i++){
+            for(int j = 0; j < width; j++){
+                world[i][j][0] = World.TYPE_BEDROCK;
             }
         }
     }
 
     private void placeStone(){
         int[][] perlin = perlinNoise();
-        for(int i = 0; i < LENGTH; i++){
-            for(int j = 0; j < WIDTH; j++){
+        for(int i = 0; i < length; i++){
+            for(int j = 0; j < width; j++){
                 for(int k = 1; k < perlin[i][j]+1; k++){
-                    world[i][j][k]=1;
+                    world[i][j][k] = World.TYPE_STONE;
                 }
             }
         }
@@ -64,12 +67,12 @@ public class LandGen {
     
     private void placeDirt(){
         int[][] perlin = perlinNoise();
-        for(int i = 0; i < LENGTH; i++){
-            for(int j = 0; j < WIDTH; j++){
-                lab:for(int k = 0; k < HEIGHT; k++){
+        for(int i = 0; i < length; i++){
+            for(int j = 0; j < width; j++){
+                lab:for(int k = 0; k < height; k++){
                     if(world[i][j][k] == 0){
                         for(int l = 0; l < perlin[i][j]; l++){
-                            world[i][j][l+k] = 2;
+                            world[i][j][l+k] = World.TYPE_DIRT;
                         }
                         break lab;
                     }
@@ -88,11 +91,11 @@ public class LandGen {
     public int[][] perlinNoise(){
         Random r = new Random();
         int [][] ret,tmp;
-        tmp = ret = new int[LENGTH][WIDTH];
+        tmp = ret = new int[length][width];
         for(int h = 16; h > 0; h--){ //buncha iterations                                                
-            tmp = new int[LENGTH][WIDTH];
-            for(int i = 0; i < LENGTH; i+=h){ //x axis                                                  
-                for(int j= 0; j < WIDTH; j+=h){ //y axis                                                
+            tmp = new int[length][width];
+            for(int i = 0; i < length; i+=h){ //x axis                                                  
+                for(int j= 0; j < width; j+=h){ //y axis                                                
                     int m,n,o,p;
                     m = i-h;
                     n = j-h;
@@ -100,8 +103,8 @@ public class LandGen {
                     p = j+h;
                     if(m<0){m=0;}
                     if(n<0){n=0;}
-                    if(o>LENGTH){o=LENGTH;}
-                    if(p>WIDTH){p=WIDTH;}
+                    if(o>length){o=length;}
+                    if(p>width){p=width;}
                     int q = r.nextInt(h/13 +1);
                     for(int k = m; k < o; k++){
                         for(int l = n; l < p; l++){
@@ -110,8 +113,8 @@ public class LandGen {
                     }
                 }
             }
-            for(int i = 0; i < LENGTH; i++){
-                for(int j = 0; j < WIDTH; j++){
+            for(int i = 0; i < length; i++){
+                for(int j = 0; j < width; j++){
                     ret[i][j] += tmp[i][j];
                 }
             }

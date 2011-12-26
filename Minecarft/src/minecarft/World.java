@@ -25,9 +25,9 @@ package minecarft;
  * @author kevin
  */
 public class World {
+    public static final int Z = 128;
     public static final int X = 128;
     public static final int Y = 128;
-    public static final int Z = 128;
     
     public static final int TYPE_AIR = 0;
     public static final int TYPE_STONE = 1;
@@ -38,7 +38,7 @@ public class World {
     public int[][][] world;
     
     public World() {
-        LandGen peniscupcake = new LandGen();
+        LandGen peniscupcake = new LandGen(Z, X, Y);
         world = peniscupcake.getWorld();
     }
     
