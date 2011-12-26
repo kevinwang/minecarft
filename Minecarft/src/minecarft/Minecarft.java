@@ -41,9 +41,9 @@ public class Minecarft {
     public static final int DISPLAY_FREQUENCY = 60;
     public static final boolean DISPLAY_FULLSCREEN = false;
     
-    public static final float BLOCK_SIZE = 0.25f;
+    public static final float BLOCK_SIZE = 0.15f;
     
-    public static final float RENDER_DISTANCE = 10.0f;
+    public static final float RENDER_DISTANCE = 15.0f;
     
     CameraController camera;
     

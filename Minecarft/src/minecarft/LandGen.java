@@ -88,7 +88,7 @@ public class LandGen {
     }
     
     private void placeDirt(){
-        int[][] perlin = perlinNoise(3);
+        int[][] perlin = perlinNoise(4);
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 lab:for(int k = 0; k < height; k++){
@@ -104,7 +104,22 @@ public class LandGen {
     }
     
     private void addWater(){
-        
+        int levels = 0;
+        boolean b = false;
+        for(int k = 51; k < height; k++){
+            if(levels < 8){
+                for(int i = 0; i < length; i++){
+                    for(int j = 0; j < width; j++){
+                        if(world[i][j][k] == 0){
+                            world[i][j][k] = World.TYPE_WATER;
+                            b=true;
+                        }
+                    }
+            
+                }
+                if(b==true){levels++;}
+            }
+       }
     }
     
     public void erodeLandscape(){}
