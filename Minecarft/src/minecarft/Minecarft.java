@@ -29,7 +29,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
 import org.newdawn.slick.opengl.TextureLoader;
-import sun.security.krb5.internal.KDCOptions;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
