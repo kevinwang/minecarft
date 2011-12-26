@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 package minecarft;
-import java.util.*;
-import java.io.*;
+
+import java.util.Random;
+
 /**
  *
  * @author sshi
@@ -12,13 +13,15 @@ import java.io.*;
 public class LandGen {
     public final int LENGTH = 128;
     public final int WIDTH = 128;
-    public final int HEIGHT= 128;
+    public final int HEIGHT = 128;
     int[][][] world;
+    
     public LandGen(){
         Random r = new Random();
         world = new int[LENGTH][WIDTH][HEIGHT];
         generate();
     }
+    
     private void generate(){
         placeBedrock();
         placeStone();
@@ -28,6 +31,7 @@ public class LandGen {
         addLava();
         plantTrees();
     }
+    
     /*                                                                                                  
       ----------Key----------                                                                           
       air = 0                                                                                           
@@ -57,6 +61,7 @@ public class LandGen {
             }
         }
     }
+    
     private void placeDirt(){
         int[][] perlin = perlinNoise();
         for(int i = 0; i < LENGTH; i++){
@@ -72,9 +77,11 @@ public class LandGen {
             }
         }
     }
+    
     private void addWater(){
         
     }
+    
     public void erodeLandscape(){}
     public void addLava(){}
     public void plantTrees(){}
@@ -111,8 +118,8 @@ public class LandGen {
         }
         return ret;
     }
+    
     public int[][][] getWorld(){
         return world;
     }
-
 }
