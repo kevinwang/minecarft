@@ -36,7 +36,7 @@ public class World {
     public static final int TYPE_DIRT_GRASS = 1336; // Special type for rendering, not in array
     public static final int TYPE_BEDROCK = 1337;
     
-    public int[][][] world;
+    private int[][][] world;
     
     public World() {
         LandGen peniscupcake = new LandGen(Z, X, Y);

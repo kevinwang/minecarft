@@ -46,16 +46,16 @@ public class Minecarft {
     
     public static final float RENDER_DISTANCE = 10.0f;
     
-    Player player;
+    private Player player;
     
-    World world = new World();
+    private World world = new World();
     
-    Texture stoneTexture;
-    Texture dirtTexture;
-    Texture dirtGrassTexture;
-    Texture waterTexture;
-    Texture grassTexture;
-    Texture bedrockTexture;
+    private Texture stoneTexture;
+    private Texture dirtTexture;
+    private Texture dirtGrassTexture;
+    private Texture waterTexture;
+    private Texture grassTexture;
+    private Texture bedrockTexture;
 
     public void start() {
         try {
