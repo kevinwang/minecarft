@@ -103,7 +103,7 @@ public class Minecarft {
         glDepthFunc(GL_LEQUAL);						// The Type Of Depth Testing To Do
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
         
-        player = new Player(0.0f, -16.0f, -3.0f);
+        player = new Player(-16.0f, -20.0f, 16.0f);
         
         initTextures();
 
@@ -173,6 +173,9 @@ public class Minecarft {
             if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
                 player.jump();
             }
+            else {
+                player.applyGravity();
+            }
 
             // Begin drawing
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -180,8 +183,6 @@ public class Minecarft {
             drawWorld();
             
             glLoadIdentity();
-            
-            player.applyGravity();
             
             player.lookThrough();
 

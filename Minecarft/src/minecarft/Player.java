@@ -28,6 +28,8 @@ import static org.lwjgl.opengl.GL11.*;
  * @author kevin
  */
 public class Player {
+    public static final float PLAYER_HEIGHT = 0.5f;
+    
     private Vector3f position = null;
     private float yaw = 0.0f;
     private float pitch = 0.0f;
@@ -37,10 +39,13 @@ public class Player {
     private float vStrafe = 0.0f;
     private float vY = 0.0f;
     
-    private boolean noclip = true;
+    private boolean noclip = false;
+    
+    private World world;
     
     public Player(float x, float y, float z) {
         position = new Vector3f(x, y, z);
+        world = World.getInstance();
     }
     
     public void yaw(float amount) {
@@ -96,11 +101,27 @@ public class Player {
     }
     
     public void jump() {
-        vY = 1.0f;
+        vY = 0.5f;
     }
     
     public void applyGravity() {
-        
+        if (vY > -0.5f) {
+            vY -= 0.1f;
+        }
+        if (isOnGround()) {
+            vY = 0.0f;
+        }
+    }
+    
+    public boolean isOnGround() {
+        try {
+            int arrayZ = (int) (position.z * (1.0f / Minecarft.BLOCK_SIZE));
+            int arrayX = (int) (-position.x * (1.0f / Minecarft.BLOCK_SIZE));
+            int arrayY = (int) ((-position.y - Minecarft.BLOCK_SIZE - PLAYER_HEIGHT) * (1.0f / Minecarft.BLOCK_SIZE));
+            return world.getWorld()[arrayZ][arrayX][arrayY] != 0;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
     }
     
     public void lookThrough() {
@@ -118,6 +139,11 @@ public class Player {
         // Strafe camera
         position.x -= vStrafe * (float) Math.sin(Math.toRadians(yaw - 90));
         position.z += vStrafe * (float) Math.cos(Math.toRadians(yaw - 90));
+        
+        // Gravity
+        if (!noclip) {
+            position.y -= vY;
+        }
         
         // Apply camera changes to OpenGL matrix
         glRotatef(pitch, 1.0f, 0.0f, 0.0f);
