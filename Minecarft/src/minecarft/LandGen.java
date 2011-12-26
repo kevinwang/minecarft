@@ -30,6 +30,7 @@ public class LandGen {
     private int length;
     private int width;
     private int height;
+    private int sealvl;
     private int[][][] world;
     
     public LandGen(int length, int width, int height){
@@ -51,17 +52,6 @@ public class LandGen {
         plantTrees();
     }
     
-    /*                                                                                                  
-      ----------Key----------                                                                           
-      air = 0                                                                                           
-      stone = 1                                                                                         
-      dirt = 2                                                                                          
-      wood = 3                                                                                          
-      leaves = 4                                                                                        
-      water = 10                                                                                        
-      lava = 11                                                                                         
-      bedrock = 1337                                                                                    
-     */
     private void placeBedrock(){
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
@@ -88,7 +78,7 @@ public class LandGen {
     }
     
     private void placeDirt(){
-        int[][] perlin = perlinNoise(3);
+        int[][] perlin = perlinNoise(4);
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 lab:for(int k = 0; k < height; k++){
@@ -104,10 +94,141 @@ public class LandGen {
     }
     
     private void addWater(){
-        
+        int levels = 0;
+        boolean b = false;
+        for(int k = 51; k < height; k++){
+            if(levels < 8){
+                for(int i = 0; i < length; i++){
+                    for(int j = 0; j < width; j++){
+                        if(world[i][j][k] == 0){
+                            world[i][j][k] = World.TYPE_WATER;
+                            b=true;
+                        }
+                    }
+            
+                }
+                if(b==true){levels++;}
+                sealvl = k;
+            }
+       }
     }
     
-    public void erodeLandscape(){}
+    private void erodeLandscape(){
+        Random r = new Random();
+        for(int i = 0; i < 15; i++){
+            int a,b,c;
+            a = r.nextInt(length);
+            b = r.nextInt(width);
+            c = r.nextInt(6) + sealvl;
+            if(world[a][b][c] != World.TYPE_WATER){
+                world[a][b][c] = 9001; //erosion magic number
+            }
+        }
+        for(int h = 0; h < 10; h++){
+            for(int i = 1; i < length - 1; i++){
+                for(int j = 1; j < width - 1; j++){
+                    for(int k = 1; k < sealvl+3; k++){
+                        if(world[i][j][k] == 9001){
+                            switch(r.nextInt(28)+1){
+                                case 1: 
+                                    world[i-1][j-1][k-1] = 9001;
+                                    world[i][j][k-1] = 9001;
+                                    break;
+                                case 2: 
+                                    world[i][j-1][k-1] = 9001;
+                                    break;
+                                case 3: 
+                                    world[i+1][j-1][k-1] = 9001;
+                                    world[i][j][k-1] = 9001;
+                                    break;
+                                case 4: 
+                                    world[i-1][j][k-1] = 9001;
+                                    break;
+                                case 5: 
+                                    world[i][j][k-1] = 9001;
+                                    break;
+                                case 6: 
+                                    world[i+1][j][k-1] = 9001;
+                                    break;
+                                case 7: 
+                                    world[i-1][j+1][k-1] = 9001;
+                                    world[i][j][k-1] = 9001;
+                                    break;
+                                case 8: 
+                                    world[i][j+1][k-1] = 9001;
+                                    break;
+                                case 9: 
+                                    world[i+1][j+1][k-1] = 9001;
+                                    world[i][j][k-1] = 9001;
+                                    break;
+                                case 10:
+                                    break;
+                                case 11: 
+                                    world[i][j-1][k] = 9001;
+                                case 12:
+                                    world[i-1][j-1][k] = 9001;
+                                break;
+                                case 13: case 14:
+                                    world[i][j-1][k] = 9001;
+                                break;
+                                case 15: 
+                                    world[i+1][j][k] = 9001;
+                                case 16:
+                                    world[i+1][j-1][k] = 9001;
+                                break;
+                                case 17: case 18:
+                                    world[i-1][j][k] = 9001;
+                                break;
+                                case 19: case 20: 
+                                   world[i+1][j][k] = 9001;
+                                break;
+                                case 21: 
+                                    world[i][j+1][k] = 9001;
+                                case 22:
+                                    world[i-1][j+1][k] = 9001;
+                                break;
+                                case 23: case 24:
+                                    world[i][j+1][k] = 9001;
+                                break;
+                                case 25: 
+                                    world[i][j+1][k] = 9001;
+                                case 26:
+                                    world[i+1][j+1][k] = 9001;
+                                break;
+                            }
+                        }
+                    }    
+                }
+            }
+        }
+        for(int i = 0; i < length; i++){
+            for(int j = 0; j < width; j++){
+                for(int k = 0; k < height; k++){               
+                    if(world[i][j][k] == 9001){
+                        world[i][j][k] = World.TYPE_AIR;
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < length; i++){
+            for(int j = 0; j < width; j++){
+                for(int k = 0; k < height; k++){ 
+                    try{
+                        if(world[i-1][j][k] == World.TYPE_AIR &&
+                            world[i][j-1][k] == World.TYPE_AIR &&
+                            world[i][j][k-1] == World.TYPE_AIR &&
+                            world[i+1][j][k] == World.TYPE_AIR &&
+                            world[i][j+1][k] == World.TYPE_AIR &&
+                            world[i][j][k+1] == World.TYPE_AIR){
+                             world[i][j][k] = World.TYPE_AIR;
+                        }
+                    }catch(Exception e){
+                        
+                    }
+                }
+            }
+        }
+    }
     public void addLava(){}
     public void plantTrees(){}
     public int[][] perlinNoise(int a){
