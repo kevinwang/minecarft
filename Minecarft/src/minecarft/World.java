@@ -40,7 +40,8 @@ public class World {
     public int[][][] world;
     
     public World() {
-        world = new int[Z][X][Y];
+
+/*        world = new int[Z][X][Y];
         // Generate terrain and fill world array
         Random r = new Random();
         for (int z = 0; z < world.length; z++) {
@@ -52,7 +53,10 @@ public class World {
                 }
             }
         }
-    }
+*/
+        LandGen peniscupcake = new LandGen();
+        world = peniscupcake.getWorld();
+}
     
     public int[][][] getWorld() {
         return world;

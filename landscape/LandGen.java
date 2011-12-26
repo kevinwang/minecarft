@@ -63,7 +63,9 @@ public class LandGen{
 	    }
 	}
     }
-    public void addWater(){}
+    public void addWater(){
+	for(int i = 0; i< )
+    }
     public void erodeLandscape(){}
     public void addLava(){}
     public void plantTrees(){}
