@@ -60,16 +60,16 @@ public class CameraController {
         vFwdRev = vFwdRev < -acceleration ? -acceleration : vFwdRev - acceleration / 5;
     }
     
-    // TODO: Redo slowdown code to eliminate jitter at all frame rates
     public void slowDownFwdRev(float acceleration) {
-        if (Math.abs(vFwdRev) < 0.03f) {
-            vFwdRev = 0.0f;
-        }
+        float lastV = vFwdRev;
         if (vFwdRev > 0.0f) {
             vFwdRev -= acceleration / 5;
         }
         else if (vFwdRev < 0.0f) {
             vFwdRev += acceleration / 5;
+        }
+        if (vFwdRev < 0 && lastV > 0 || vFwdRev > 0 && lastV < 0) {
+            vFwdRev = 0;
         }
     }
     
@@ -82,14 +82,15 @@ public class CameraController {
     }
     
     public void slowDownStrafe(float acceleration) {
-        if (Math.abs(vStrafe) < 0.03f) {
-            vStrafe = 0.0f;
-        }
+        float lastV = vStrafe;
         if (vStrafe > 0.0f) {
             vStrafe -= acceleration / 5;
         }
         else if (vStrafe < 0.0f) {
             vStrafe += acceleration / 5;
+        }
+        if (vStrafe < 0 && lastV > 0 || vStrafe > 0 && lastV < 0) {
+            vStrafe = 0;
         }
     }
     
