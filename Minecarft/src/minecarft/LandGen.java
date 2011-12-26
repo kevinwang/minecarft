@@ -71,7 +71,7 @@ public class LandGen {
     }
 
     private void placeStone(){
-        int[][] perlin = perlinNoise();
+        int[][] perlin = perlinNoise(14);
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 for(int k = 1; k < perlin[i][j]+1; k++){
@@ -82,7 +82,7 @@ public class LandGen {
     }
     
     private void placeDirt(){
-        int[][] perlin = perlinNoise();
+        int[][] perlin = perlinNoise(5);
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 lab:for(int k = 0; k < height; k++){
@@ -104,11 +104,11 @@ public class LandGen {
     public void erodeLandscape(){}
     public void addLava(){}
     public void plantTrees(){}
-    public int[][] perlinNoise(){
+    public int[][] perlinNoise(int a){
         Random r = new Random();
         int [][] ret,tmp;
         tmp = ret = new int[length][width];
-        for(int h = 16; h > 0; h--){ //buncha iterations                                                
+        for(int h = a+2; h > 0; h--){ //buncha iterations                                                
             tmp = new int[length][width];
             for(int i = 0; i < length; i+=h){ //x axis                                                  
                 for(int j= 0; j < width; j+=h){ //y axis                                                
@@ -121,7 +121,7 @@ public class LandGen {
                     if(n<0){n=0;}
                     if(o>length){o=length;}
                     if(p>width){p=width;}
-                    int q = r.nextInt(h/13 +1);
+                    int q = r.nextInt(h/a +1);
                     for(int k = m; k < o; k++){
                         for(int l = n; l < p; l++){
                             tmp[k][l] += q;
