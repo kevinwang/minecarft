@@ -69,7 +69,7 @@ public class Minecarft {
             }
             if (!isDisplayConfigured) {
                 if (DISPLAY_FULLSCREEN) {
-                    System.out.println("Fullscreen is not supported on your system at " + DISPLAY_WIDTH + "x" + DISPLAY_HEIGHT + " " + DISPLAY_FREQUENCY + "Hz.\n"
+                    System.err.println("Fullscreen is not supported on your system at " + DISPLAY_WIDTH + "x" + DISPLAY_HEIGHT + " " + DISPLAY_FREQUENCY + "Hz.\n"
                             + "Running in windowed mode.");
                 }
                 Display.setDisplayMode(new DisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT));
@@ -77,11 +77,11 @@ public class Minecarft {
             Display.setTitle("Minecarft");
             Display.create();
         } catch(UnsatisfiedLinkError e) {
-            System.out.println("Error! Make sure your run config is set to the correct OS. Exiting.");
-            System.exit(0);
+            System.err.println("Error! Make sure your run config is set to the correct OS. Exiting.");
+            System.exit(1);
         } catch (LWJGLException e) {
-            e.printStackTrace();
-            System.exit(0);
+            System.err.println("Lasers error! Exiting.");
+            System.exit(3);
         }
 
         glViewport(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
@@ -115,8 +115,8 @@ public class Minecarft {
             grassTexture = TextureLoader.getTexture("PNG", new FileInputStream("grass.png"));
             bedrockTexture = TextureLoader.getTexture("PNG", new FileInputStream("bedrock.png"));
         } catch (Exception e) {
-            System.out.println("Error! Could not load textures.");
-            System.exit(0);
+            System.err.println("Error! Could not load textures. Exiting.");
+            System.exit(2);
         }
     }
 
