@@ -49,6 +49,7 @@ public class Minecarft {
     Texture dirtTexture;
     Texture dirtGrassTexture;
     Texture grassTexture;
+    Texture bedrockTexture;
 
     public void start() {
         try {
@@ -112,6 +113,7 @@ public class Minecarft {
             dirtTexture = TextureLoader.getTexture("PNG", new FileInputStream("dirt.png"));
             dirtGrassTexture = TextureLoader.getTexture("PNG", new FileInputStream("dirt_grass.png"));
             grassTexture = TextureLoader.getTexture("PNG", new FileInputStream("grass.png"));
+            bedrockTexture = TextureLoader.getTexture("PNG", new FileInputStream("bedrock.png"));
         } catch (Exception e) {
             System.out.println("Error! Could not load textures.");
             System.exit(0);
@@ -207,7 +209,13 @@ public class Minecarft {
             case World.TYPE_DIRT_GRASS:
                 grassTexture.bind();
                 break;
+            case World.TYPE_BEDROCK:
+                bedrockTexture.bind();
+                break;
         }
+        
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         
         glBegin(GL_QUADS);		// Draw The Cube Using quads
         
@@ -224,6 +232,8 @@ public class Minecarft {
         if (type == World.TYPE_DIRT_GRASS) {
             glEnd();
             dirtTexture.bind();
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glBegin(GL_QUADS);
         }
         
@@ -239,6 +249,8 @@ public class Minecarft {
         if (type == World.TYPE_DIRT_GRASS) {
             glEnd();
             dirtGrassTexture.bind();
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glBegin(GL_QUADS);
         }
         
