@@ -27,9 +27,9 @@ import java.util.Random;
  * @author sshi
  */
 public class LandGen {
-    private int length = 128;
-    private int width = 128;
-    private int height = 128;
+    private int length;
+    private int width;
+    private int height;
     private int[][][] world;
     
     public LandGen(int length, int width, int height){

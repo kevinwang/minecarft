@@ -60,6 +60,7 @@ public class CameraController {
         vFwdRev = vFwdRev < -acceleration ? -acceleration : vFwdRev - acceleration / 5;
     }
     
+    // TODO: Redo slowdown code to eliminate jitter at all frame rates
     public void slowDownFwdRev(float acceleration) {
         if (Math.abs(vFwdRev) < 0.03f) {
             vFwdRev = 0.0f;
@@ -114,7 +115,7 @@ public class CameraController {
         glTranslatef(position.x, position.y, position.z);
         
         // Print debug info
-        System.out.println("x = " + position.x + " y = " + position.y + " z = " + position.z + " yaw = " + yaw + " pitch = " + pitch + " vFwdRev = " + vFwdRev + " vStrafe = " + vStrafe);
+//        System.out.println("x = " + position.x + " y = " + position.y + " z = " + position.z + " yaw = " + yaw + " pitch = " + pitch + " vFwdRev = " + vFwdRev + " vStrafe = " + vStrafe);
     }
     
     public Vector3f getPosition() {
