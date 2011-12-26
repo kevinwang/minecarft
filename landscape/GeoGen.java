@@ -3,8 +3,8 @@ import java.io.*;
 import java.awt.image.*;
 import javax.imageio.*;
 public class GeoGen{
-    public final int LENGTH = 256;
-    public final int WIDTH = 256;
+    public final int LENGTH = 1024;
+    public final int WIDTH = 1024;
     public final int HEIGHT= 256;
     //LENGTH = WIDTH = HEIGHT = 256;
     public GeoGen(){
@@ -22,9 +22,9 @@ public class GeoGen{
 	    System.out.println();
 	}
 	*/
-	BufferedImage theImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
-	for(int y = 0; y<256; y++){
-	    for(int x = 0; x<256; x++){
+	BufferedImage theImage = new BufferedImage(LENGTH, WIDTH, BufferedImage.TYPE_INT_RGB);
+	for(int y = 0; y<LENGTH; y++){
+	    for(int x = 0; x<WIDTH; x++){
 		theImage.setRGB(x, y, world[y][x]);
 	    }
 	}
@@ -78,23 +78,23 @@ public class GeoGen{
 	Random r = new Random();
 	int [][] ret,tmp;
 	tmp = ret = new int[LENGTH][WIDTH];
-	for(int h = 64; h > 0; h=h/2){ //buncha iterations
+	for(int h = 16; h > 0; h--){ //buncha iterations
 	    tmp = new int[LENGTH][WIDTH];
 	    for(int i = 0; i < LENGTH; i+=h){ //x axis
 		for(int j= 0; j < WIDTH; j+=h){ //y axis
 		    int m,n,o,p;
-		    m = i-((r.nextInt(5)-2)+h);
-		    n = j-((r.nextInt(5)-2)+h);
-		    o = i+((r.nextInt(5)-2)+h);
-		    p = j+((r.nextInt(5)-2)+h);
+		    m = i-h;
+		    n = j-h;
+		    o = i+h;
+		    p = j+h;
 		    if(m<0){m=0;}
 		    if(n<0){n=0;}
 		    if(o>LENGTH){o=LENGTH;}
 		    if(p>WIDTH){p=WIDTH;}
-		    int q = r.nextInt(h/2 + 1);
+		    int q = r.nextInt(h/2+1) + h/2;
 		    for(int k = m; k < o; k++){
 			for(int l = n; l < p; l++){
-			    tmp[k][l] += q*65793;
+			    tmp[k][l] += q*65793;//grayscale
 			}
 		    }
 		}
@@ -104,9 +104,9 @@ public class GeoGen{
 		    ret[i][j] += tmp[i][j];
 		}
 	    }
-	    BufferedImage temporary = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
-	    for(int y = 0; y<256; y++){
-		for(int x = 0; x<256; x++){
+	    BufferedImage temporary = new BufferedImage(LENGTH, WIDTH, BufferedImage.TYPE_INT_RGB);
+	    for(int y = 0; y<LENGTH; y++){
+		for(int x = 0; x<WIDTH; x++){
 		    temporary.setRGB(x, y, tmp[y][x]);
 		}
 	}
