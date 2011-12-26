@@ -38,7 +38,16 @@ public class World {
     
     private int[][][] world;
     
-    public World() {
+    private static World instance;
+    
+    public static World getInstance() {
+        if (instance == null) {
+            instance = new World();
+        }
+        return instance;
+    }
+    
+    private World() {
         LandGen peniscupcake = new LandGen(Z, X, Y);
         world = peniscupcake.getWorld();
     }

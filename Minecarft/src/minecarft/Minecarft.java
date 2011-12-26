@@ -47,7 +47,7 @@ public class Minecarft {
     
     private Player player;
     
-    private World world = new World();
+    private World world = World.getInstance();
     
     private Texture stoneTexture;
     private Texture dirtTexture;
