@@ -29,6 +29,7 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Player {
     public static final float PLAYER_HEIGHT = 0.5f;
+    public static final float MOVEMENT_SPEED = 2.0f;
     
     private Vector3f position = null;
     private float yaw = 0.0f;

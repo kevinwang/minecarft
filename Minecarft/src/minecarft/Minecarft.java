@@ -41,8 +41,8 @@ public class Minecarft {
     public static final int DISPLAY_FREQUENCY = 60;
     public static final boolean DISPLAY_FULLSCREEN = false;
     
+    public static final float MOUSE_SENSITIVITY = 0.1f;
     public static final float BLOCK_SIZE = 0.15f;
-    
     public static final float RENDER_DISTANCE = 10.0f;
     
     private Player player;
@@ -135,9 +135,6 @@ public class Minecarft {
         long lastTime = 0;
         long time = 0;
 
-        float mouseSensitivity = 0.1f;
-        float movementSpeed = 2.0f;
-
         Mouse.setGrabbed(true);
 
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
@@ -148,27 +145,27 @@ public class Minecarft {
             // Control camera yaw/pitch with mouse
             dx = Mouse.getDX();
             dy = -Mouse.getDY();
-            player.yaw(dx * mouseSensitivity);
-            player.pitch(dy * mouseSensitivity);
+            player.yaw(dx * MOUSE_SENSITIVITY);
+            player.pitch(dy * MOUSE_SENSITIVITY);
 
             // Control camera position with keyboard
             if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-                player.walkForward(movementSpeed * dt);
+                player.walkForward(Player.MOVEMENT_SPEED * dt);
             }
             else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-                player.walkBackwards(movementSpeed * dt);
+                player.walkBackwards(Player.MOVEMENT_SPEED * dt);
             }
             else {
-                player.slowDownFwdRev(movementSpeed * dt);
+                player.slowDownFwdRev(Player.MOVEMENT_SPEED * dt);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-                player.strafeLeft(movementSpeed * dt);
+                player.strafeLeft(Player.MOVEMENT_SPEED * dt);
             }
             else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-                player.strafeRight(movementSpeed * dt);
+                player.strafeRight(Player.MOVEMENT_SPEED * dt);
             }
             else {
-                player.slowDownStrafe(movementSpeed * dt);
+                player.slowDownStrafe(Player.MOVEMENT_SPEED * dt);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
                 player.jump();
