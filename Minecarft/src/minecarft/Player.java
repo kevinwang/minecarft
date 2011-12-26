@@ -27,7 +27,7 @@ import static org.lwjgl.opengl.GL11.*;
  *
  * @author kevin
  */
-public class CameraController {
+public class Player {
     private Vector3f position = null;
     private float yaw = 0.0f;
     private float pitch = 0.0f;
@@ -38,7 +38,7 @@ public class CameraController {
     
     private boolean noclip = true;
     
-    public CameraController(float x, float y, float z) {
+    public Player(float x, float y, float z) {
         position = new Vector3f(x, y, z);
     }
     
