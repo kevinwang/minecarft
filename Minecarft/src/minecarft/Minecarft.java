@@ -29,6 +29,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
 import org.newdawn.slick.opengl.TextureLoader;
+import sun.security.krb5.internal.KDCOptions;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -170,6 +171,9 @@ public class Minecarft {
             else {
                 player.slowDownStrafe(movementSpeed * dt);
             }
+            if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+                player.jump();
+            }
 
             // Begin drawing
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -177,6 +181,8 @@ public class Minecarft {
             drawWorld();
             
             glLoadIdentity();
+            
+            player.applyGravity();
             
             player.lookThrough();
 

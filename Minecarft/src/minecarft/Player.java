@@ -35,6 +35,7 @@ public class Player {
     // Camera velocity components
     private float vFwdRev = 0.0f;
     private float vStrafe = 0.0f;
+    private float vY = 0.0f;
     
     private boolean noclip = true;
     
@@ -92,6 +93,14 @@ public class Player {
         if (vStrafe < 0 && lastV > 0 || vStrafe > 0 && lastV < 0) {
             vStrafe = 0;
         }
+    }
+    
+    public void jump() {
+        vY = 1.0f;
+    }
+    
+    public void applyGravity() {
+        
     }
     
     public void lookThrough() {
