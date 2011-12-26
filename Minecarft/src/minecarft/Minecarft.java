@@ -43,6 +43,8 @@ public class Minecarft {
     
     public static final float BLOCK_SIZE = 0.25f;
     
+    public static final float RENDER_DISTANCE = 10.0f;
+    
     CameraController camera;
     
     World world = new World();
@@ -201,6 +203,12 @@ public class Minecarft {
     }
 
     public void drawCube(float x, float y, float z, int type) {
+        if (Math.sqrt((camera.getPosition().x + x) * (camera.getPosition().x - -x) +
+                (camera.getPosition().y + y) * (camera.getPosition().y - -y) +
+                (camera.getPosition().z + z) * (camera.getPosition().z - -z)) > RENDER_DISTANCE) {
+            return;
+        }
+        
         switch (type) {
             case World.TYPE_STONE:
                 stoneTexture.bind();
