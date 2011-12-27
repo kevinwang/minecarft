@@ -30,15 +30,24 @@ public class LandGen {
     private int length;
     private int width;
     private int height;
-    private int sealvl;
+    private int sealvl = 20;
+    private int tonofstone = 50;
+    private int tonofdirt = 5;
     private int[][][] world;
     
     public LandGen(int length, int width, int height){
         Random r = new Random();
-        world = new int[length][width][height];
+        world = new int[length+1][width+1][height+1];
         this.length = length;
         this.width = width;
         this.height = height;
+        for(int i = 0; i < length; i++){
+            for(int j = 0; j < width; j++){
+                for(int k = 0; k < height; k++){
+                    world[i][j][k] = World.TYPE_AIR;
+                }
+            }
+        }
         generate();
     }
     
@@ -61,16 +70,18 @@ public class LandGen {
     }
 
     private void placeStone(){
+        //tonofstone high chunk at the bottom
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
-                for(int k = 1; k < 51; k++)
+                for(int k = 1; k < tonofstone; k++)
                     world[i][j][k] = World.TYPE_STONE;
             }
         }
-        int[][] perlin = perlinNoise(12);
+        //perlin noise to top it off
+        int[][] perlin = perlinNoise(13);
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
-                for(int k = 1; k < perlin[i][j]+51; k++){
+                for(int k = tonofstone; k < perlin[i][j]+tonofstone; k++){
                     world[i][j][k] = World.TYPE_STONE;
                 }
             }
@@ -78,10 +89,15 @@ public class LandGen {
     }
     
     private void placeDirt(){
-        int[][] perlin = perlinNoise(4);
+        int[][] perlin = perlinNoise(3);
+        for(int i = 0; i<length; i++){
+            for(int j = 0; j<width; j++){
+                perlin[i][j] += tonofdirt;
+            }
+        }
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
-                lab:for(int k = 0; k < height; k++){
+                lab:for(int k = tonofstone+1; k < height; k++){
                     if(world[i][j][k] == 0){
                         for(int l = 0; l < perlin[i][j]; l++){
                             world[i][j][l+k] = World.TYPE_DIRT;
@@ -94,127 +110,114 @@ public class LandGen {
     }
     
     private void addWater(){
+        int tmp = 0;
         int levels = 0;
         boolean b = false;
-        for(int k = 51; k < height; k++){
+        for(int k = tonofstone + tonofdirt; k < height; k++){
             if(levels < 8){
                 for(int i = 0; i < length; i++){
                     for(int j = 0; j < width; j++){
                         if(world[i][j][k] == 0){
                             world[i][j][k] = World.TYPE_WATER;
                             b=true;
+                            if(k>tmp){tmp=k;}
                         }
                     }
-            
                 }
-                if(b==true){levels++;}
-                sealvl = k;
+                if(b){levels++;}
             }
-       }
+            sealvl=tmp;
+            System.out.println(sealvl);
+        }
     }
     
     private void erodeLandscape(){
         Random r = new Random();
-        for(int i = 0; i < 15; i++){
-            int a,b,c;
+        int a,b,c;
+        //setting erosion source blocks
+        for(int i = 0; i < 8; i++){
             a = r.nextInt(length);
             b = r.nextInt(width);
-            c = r.nextInt(6) + sealvl;
-            if(world[a][b][c] != World.TYPE_WATER){
-                world[a][b][c] = 9001; //erosion magic number
-            }
+            c = sealvl + 8 +r.nextInt(10);
+            world[a][b][c] = 9001; //erosion magic number
         }
-        for(int h = 0; h < 10; h++){
+        for(int i = 0; i < 8; i++){
+            a = r.nextInt(length);
+            b = r.nextInt(width);
+            c = sealvl - 4 - r.nextInt(10);
+            world[a][b][c] = 9001; //erosion magic number
+        }
+        //eroding
+        for(int h = 0; h < 500; h++){
             for(int i = 1; i < length - 1; i++){
                 for(int j = 1; j < width - 1; j++){
-                    for(int k = 1; k < sealvl+3; k++){
+                    for(int k = 1; k < sealvl + 20; k++){
                         if(world[i][j][k] == 9001){
                             switch(r.nextInt(28)+1){
-                                case 1: 
-                                    world[i-1][j-1][k-1] = 9001;
+                                case  1:case  2:case  3:
                                     world[i][j][k-1] = 9001;
                                     break;
-                                case 2: 
-                                    world[i][j-1][k-1] = 9001;
-                                    break;
-                                case 3: 
-                                    world[i+1][j-1][k-1] = 9001;
-                                    world[i][j][k-1] = 9001;
-                                    break;
-                                case 4: 
-                                    world[i-1][j][k-1] = 9001;
-                                    break;
-                                case 5: 
-                                    world[i][j][k-1] = 9001;
-                                    break;
-                                case 6: 
-                                    world[i+1][j][k-1] = 9001;
-                                    break;
-                                case 7: 
-                                    world[i-1][j+1][k-1] = 9001;
-                                    world[i][j][k-1] = 9001;
-                                    break;
-                                case 8: 
-                                    world[i][j+1][k-1] = 9001;
-                                    break;
-                                case 9: 
-                                    world[i+1][j+1][k-1] = 9001;
-                                    world[i][j][k-1] = 9001;
-                                    break;
-                                case 10:
-                                    break;
-                                case 11: 
-                                    world[i][j-1][k] = 9001;
-                                case 12:
-                                    world[i-1][j-1][k] = 9001;
-                                break;
-                                case 13: case 14:
-                                    world[i][j-1][k] = 9001;
-                                break;
-                                case 15: 
-                                    world[i+1][j][k] = 9001;
-                                case 16:
-                                    world[i+1][j-1][k] = 9001;
-                                break;
-                                case 17: case 18:
+                                case  4:case  5:case  6:case  7:case  8:case  9:
                                     world[i-1][j][k] = 9001;
-                                break;
-                                case 19: case 20: 
-                                   world[i+1][j][k] = 9001;
-                                break;
-                                case 21: 
+                                    break;
+                                case 10:case 11:case 12:case 13:case 14:case 15:
+                                    world[i+1][j][k] = 9001;
+                                    break;
+                                case 16:case 17:case 18:case 19:case 20:case 21:
                                     world[i][j+1][k] = 9001;
-                                case 22:
-                                    world[i-1][j+1][k] = 9001;
-                                break;
-                                case 23: case 24:
-                                    world[i][j+1][k] = 9001;
-                                break;
-                                case 25: 
-                                    world[i][j+1][k] = 9001;
-                                case 26:
-                                    world[i+1][j+1][k] = 9001;
-                                break;
+                                    break;
+                                case 22:case 23:case 24:case 25:case 26:case 27:
+                                    world[i][j-1][k] = 9001;
+                                    break;
+                                case 28:
+                                    world[i][j][k+1] = 9001;
+                                    break;
+                            }                  
+                            world[i][j][k] = 9002;
+                            if(r.nextInt(10000) == 1){
+                                world[i][j][k] = 9001;
                             }
                         }
                     }    
                 }
             }
         }
+        //thicker tunnel
+        for(int i = 0; i < length; i++){
+            for(int j = 0; j < width; j++){
+                for(int k = 0; k < height; k++){ 
+                    try{
+                        if(world[i][j][k] != 0 && ( 
+                            world[i-1][j][k] == 9002 ||
+                            world[i][j-1][k] == 9002 ||
+                            world[i][j][k-1] == 9002 ||
+                            world[i+1][j][k] == 9002 ||
+                            world[i][j+1][k] == 9002 ||
+                            world[i][j][k+1] == 9002)){
+                            world[i][j][k] = 9003;
+                        }
+                    }catch(Exception e){                    
+                    }                
+              }
+           }
+        }
+        //air
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 for(int k = 0; k < height; k++){               
-                    if(world[i][j][k] == 9001){
+                    if(world[i][j][k] == 9001 || world[i][j][k] == 9002 || world[i][j][k] == 9003){
                         world[i][j][k] = World.TYPE_AIR;
                     }
                 }
             }
         }
+        //cleanup
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 for(int k = 0; k < height; k++){ 
                     try{
-                        if(world[i-1][j][k] == World.TYPE_AIR &&
+                        if(world[i][j][k] != 0 && 
+                            world[i-1][j][k] == World.TYPE_AIR &&
                             world[i][j-1][k] == World.TYPE_AIR &&
                             world[i][j][k-1] == World.TYPE_AIR &&
                             world[i+1][j][k] == World.TYPE_AIR &&
@@ -225,6 +228,7 @@ public class LandGen {
                     }catch(Exception e){
                         
                     }
+                    
                 }
             }
         }
