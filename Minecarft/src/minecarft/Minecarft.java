@@ -41,20 +41,20 @@ public class Minecarft {
     public static final int DISPLAY_FREQUENCY = 60;
     public static final boolean DISPLAY_FULLSCREEN = false;
     
+    public static final float MOUSE_SENSITIVITY = 0.1f;
     public static final float BLOCK_SIZE = 0.15f;
+    public static final float RENDER_DISTANCE = 10.0f;
     
-    public static final float RENDER_DISTANCE = 15.0f;
+    private Player player;
     
-    CameraController camera;
+    private World world = World.getInstance();
     
-    World world = new World();
-    
-    Texture stoneTexture;
-    Texture dirtTexture;
-    Texture dirtGrassTexture;
-    Texture waterTexture;
-    Texture grassTexture;
-    Texture bedrockTexture;
+    private Texture stoneTexture;
+    private Texture dirtTexture;
+    private Texture dirtGrassTexture;
+    private Texture waterTexture;
+    private Texture grassTexture;
+    private Texture bedrockTexture;
 
     public void start() {
         try {
@@ -103,7 +103,7 @@ public class Minecarft {
         glDepthFunc(GL_LEQUAL);						// The Type Of Depth Testing To Do
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
         
-        camera = new CameraController(0.0f, -16.0f, -3.0f);
+        player = new Player(-16.0f, -20.0f, 16.0f);
         
         initTextures();
 
@@ -135,9 +135,6 @@ public class Minecarft {
         long lastTime = 0;
         long time = 0;
 
-        float mouseSensitivity = 0.1f;
-        float movementSpeed = 5.0f;
-
         Mouse.setGrabbed(true);
 
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
@@ -148,27 +145,33 @@ public class Minecarft {
             // Control camera yaw/pitch with mouse
             dx = Mouse.getDX();
             dy = -Mouse.getDY();
-            camera.yaw(dx * mouseSensitivity);
-            camera.pitch(dy * mouseSensitivity);
+            player.yaw(dx * MOUSE_SENSITIVITY);
+            player.pitch(dy * MOUSE_SENSITIVITY);
 
             // Control camera position with keyboard
             if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-                camera.walkForward(movementSpeed * dt);
+                player.walkForward(Player.MOVEMENT_SPEED * dt);
             }
             else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-                camera.walkBackwards(movementSpeed * dt);
+                player.walkBackwards(Player.MOVEMENT_SPEED * dt);
             }
             else {
-                camera.slowDownFwdRev(movementSpeed * dt);
+                player.slowDownFwdRev(Player.MOVEMENT_SPEED * dt);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-                camera.strafeLeft(movementSpeed * dt);
+                player.strafeLeft(Player.MOVEMENT_SPEED * dt);
             }
             else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-                camera.strafeRight(movementSpeed * dt);
+                player.strafeRight(Player.MOVEMENT_SPEED * dt);
             }
             else {
-                camera.slowDownStrafe(movementSpeed * dt);
+                player.slowDownStrafe(Player.MOVEMENT_SPEED * dt);
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+                player.jump();
+            }
+            else {
+                player.applyGravity();
             }
 
             // Begin drawing
@@ -178,7 +181,7 @@ public class Minecarft {
             
             glLoadIdentity();
             
-            camera.lookThrough();
+            player.lookThrough();
 
             Display.update();
             Display.sync(60);
@@ -205,9 +208,9 @@ public class Minecarft {
     }
 
     public void drawCube(float x, float y, float z, int type) {
-        if (Math.sqrt((camera.getPosition().x + x) * (camera.getPosition().x - -x) +
-                (camera.getPosition().y + y) * (camera.getPosition().y - -y) +
-                (camera.getPosition().z + z) * (camera.getPosition().z - -z)) > RENDER_DISTANCE) {
+        if (Math.sqrt((player.getPosition().x + x) * (player.getPosition().x - -x) +
+                (player.getPosition().y + y) * (player.getPosition().y - -y) +
+                (player.getPosition().z + z) * (player.getPosition().z - -z)) > RENDER_DISTANCE) {
             return;
         }
         
@@ -234,7 +237,7 @@ public class Minecarft {
         
         glBegin(GL_QUADS);		// Draw The Cube Using quads
         
-        if (camera.getPosition().y < -y + BLOCK_SIZE) {
+        if (player.getPosition().y < -y + BLOCK_SIZE) {
             glColor3f(1.0f, 1.0f, 1.0f);
             glTexCoord2f(0.0f, 0.0f);
             glVertex3f(x + BLOCK_SIZE / 2, y + BLOCK_SIZE, z - BLOCK_SIZE / 2);	// Top Right Of The Quad (Top)
@@ -254,7 +257,7 @@ public class Minecarft {
             glBegin(GL_QUADS);
         }
 
-        if (camera.getPosition().y > -y) {
+        if (player.getPosition().y > -y) {
             glTexCoord2f(0.0f, 0.0f);
             glVertex3f(x + BLOCK_SIZE / 2, y, z + BLOCK_SIZE / 2);	// Top Right Of The Quad (Bottom)
             glTexCoord2f(0.0f, 1.0f);
@@ -273,7 +276,7 @@ public class Minecarft {
             glBegin(GL_QUADS);
         }
         
-        if (camera.getPosition().z < -z + BLOCK_SIZE / 2) {
+        if (player.getPosition().z < -z + BLOCK_SIZE / 2) {
             glTexCoord2f(1.0f, 0.0f);
             glVertex3f(x + BLOCK_SIZE / 2, y + BLOCK_SIZE, z + BLOCK_SIZE / 2);	// Top Right Of The Quad (Front)
             glTexCoord2f(0.0f, 0.0f);
@@ -284,7 +287,7 @@ public class Minecarft {
             glVertex3f(x + BLOCK_SIZE / 2, y, z + BLOCK_SIZE/2);	// Bottom Right Of The Quad (Front)
         }
         
-        if (camera.getPosition().z > -z - BLOCK_SIZE / 2) {
+        if (player.getPosition().z > -z - BLOCK_SIZE / 2) {
             glTexCoord2f(1.0f, 1.0f);
             glVertex3f(x + BLOCK_SIZE / 2, y, z - BLOCK_SIZE / 2);	// Top Right Of The Quad (Back)
             glTexCoord2f(0.0f, 1.0f);
@@ -295,7 +298,7 @@ public class Minecarft {
             glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z - BLOCK_SIZE/2);	// Bottom Right Of The Quad (Back)
         }
         
-        if (camera.getPosition().x > -x - BLOCK_SIZE / 2) {
+        if (player.getPosition().x > -x - BLOCK_SIZE / 2) {
             glTexCoord2f(1.0f, 0.0f);
             glVertex3f(x - BLOCK_SIZE / 2, y + BLOCK_SIZE, z + BLOCK_SIZE / 2);	// Top Right Of The Quad (Left)
             glTexCoord2f(0.0f, 0.0f);
@@ -306,7 +309,7 @@ public class Minecarft {
             glVertex3f(x - BLOCK_SIZE/2, y, z + BLOCK_SIZE/2);	// Bottom Right Of The Quad (Left)
         }
         
-        if (camera.getPosition().x < -x + BLOCK_SIZE / 2) {
+        if (player.getPosition().x < -x + BLOCK_SIZE / 2) {
             glTexCoord2f(1.0f, 0.0f);
             glVertex3f(x + BLOCK_SIZE / 2, y + BLOCK_SIZE, z - BLOCK_SIZE / 2);	// Top Right Of The Quad (Right)
             glTexCoord2f(0.0f, 0.0f);
