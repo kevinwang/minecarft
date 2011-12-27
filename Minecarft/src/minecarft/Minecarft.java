@@ -331,6 +331,7 @@ public class Minecarft {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        System.out.println("Minecarft - by Kevin Wang and Shan Shi");
         Minecarft minecarft = new Minecarft();
         minecarft.start();
     }

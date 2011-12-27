@@ -52,12 +52,17 @@ public class LandGen {
     }
     
     private void generate(){
+        System.out.println("Creating land...");
         placeBedrock();
         placeStone();
         placeDirt();
+        System.out.println("Flooding the earth...");
         addWater();
+        System.out.print("Eroding the landscape");
         erodeLandscape();
+        System.out.println("\nMelting the earth...");
         addLava();
+        System.out.println("Planting trees...");
         plantTrees();
     }
     
@@ -127,7 +132,6 @@ public class LandGen {
                 if(b){levels++;}
             }
             sealvl=tmp;
-//            System.out.println(sealvl);
         }
     }
     
@@ -184,6 +188,9 @@ public class LandGen {
                     }    
                 }
             }
+            if (h % 100 == 0) {
+                System.out.print(".");
+            }
         }
         for(int h = 0; h < 300; h++){
             for(int i = 1; i < length - 1; i++){
@@ -214,6 +221,9 @@ public class LandGen {
                         }
                     }
                 }
+            }
+            if (h % 100 == 0) {
+                System.out.print(".");
             }
         }
         //thicker tunnels
