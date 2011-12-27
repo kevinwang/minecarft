@@ -56,6 +56,7 @@ public class Minecarft {
     private Texture lavaTexture;
     private Texture grassTexture;
     private Texture bedrockTexture;
+    private Texture sandTexture;
 
     public void start() {
         try {
@@ -124,6 +125,7 @@ public class Minecarft {
             lavaTexture = TextureLoader.getTexture("PNG", new FileInputStream("lava.png"));
             grassTexture = TextureLoader.getTexture("PNG", new FileInputStream("grass.png"));
             bedrockTexture = TextureLoader.getTexture("PNG", new FileInputStream("bedrock.png"));
+            sandTexture = TextureLoader.getTexture("PNG", new FileInputStream("sand.png"));
         } catch (Exception e) {
             System.err.println("Error! Could not load textures. Exiting.");
             System.exit(2);
@@ -222,6 +224,9 @@ public class Minecarft {
                 break;
             case World.TYPE_DIRT:
                 dirtTexture.bind();
+                break;
+            case World.TYPE_SAND:
+                sandTexture.bind();
                 break;
             case World.TYPE_WATER:
                 waterTexture.bind();

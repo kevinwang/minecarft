@@ -58,10 +58,12 @@ public class LandGen {
         placeDirt();
         System.out.println("Flooding the earth...");
         addWater();
-        System.out.print("Eroding the landscape");
+        System.out.print("Eroding the landscape..");
         erodeLandscape();
         System.out.println("\nMelting the earth...");
         addLava();
+        System.out.println("Making beaches...");
+        makeBeach();
         System.out.println("Planting trees...");
         plantTrees();
     }
@@ -73,7 +75,6 @@ public class LandGen {
             }
         }
     }
-
     private void placeStone(){
         //tonofstone high chunk at the bottom
         for(int i = 0; i < length; i++){
@@ -92,7 +93,6 @@ public class LandGen {
             }
         }
     }
-    
     private void placeDirt(){
         int[][] perlin = perlinNoise(3);
         for(int i = 0; i<length; i++){
@@ -113,7 +113,6 @@ public class LandGen {
             }
         }
     }
-    
     private void addWater(){
         int tmp = 0;
         int levels = 0;
@@ -134,7 +133,6 @@ public class LandGen {
             sealvl=tmp;
         }
     }
-    
     private void erodeLandscape(){
         Random r = new Random();
         int a,b,c;
@@ -152,7 +150,7 @@ public class LandGen {
             world[a][b][c] = 9001; //erosion magic number
         }
         //eroding
-        for(int h = 0; h < 500; h++){
+        for(int h = 0; h < 300; h++){
             for(int i = 1; i < length - 1; i++){
                 for(int j = 1; j < width - 1; j++){
                     for(int k = 1; k < sealvl + 20; k++){
@@ -192,6 +190,7 @@ public class LandGen {
                 System.out.print(".");
             }
         }
+        //rooms
         for(int h = 0; h < 300; h++){
             for(int i = 1; i < length - 1; i++){
                 for(int j = 1; j < width - 1; j++){
@@ -257,7 +256,7 @@ public class LandGen {
                 }
             }
         }
-        //cleanup
+        //cleanup floating blocks
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 for(int k = 0; k < height; k++){ 
@@ -284,7 +283,7 @@ public class LandGen {
         int levels = 0;
         boolean b = false;
         for(int k = 1; k < height; k++){
-            if(levels < 13){
+            if(levels < 15){
                 for(int i = 0; i < length; i++){
                     for(int j = 0; j < width; j++){
                         if(world[i][j][k] == 0){
@@ -297,6 +296,62 @@ public class LandGen {
                 if(b){levels++;}
             }
         }
+    }
+    public void makeBeach(){
+        for(int h = 1; h < 3; h++){
+            for(int i = 0; i < length; i++){
+                for(int j = 0; j < width; j++){
+                    for(int k = sealvl - 10; k < sealvl+1; k++){ 
+                        try{
+                            if(world[i][j][k] != World.TYPE_AIR && 
+                                world[i][j][k] != World.TYPE_WATER &&(
+                                world[i-h][j][k] == World.TYPE_WATER ||
+                                world[i][j-h][k] == World.TYPE_WATER ||
+                                world[i][j][k-h] == World.TYPE_WATER ||
+                                world[i+h][j][k] == World.TYPE_WATER ||
+                                world[i][j+h][k] == World.TYPE_WATER ||
+                                world[i][j][k+h] == World.TYPE_WATER)){
+                                 world[i][j][k] = 3;
+                            }
+                        }catch(Exception e){
+
+                        }
+
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < length; i++){
+            for(int j = 0; j < width; j++){
+                for(int k = 0; k < height; k++){ 
+                    try{
+                        if(world[i][j][k] != World.TYPE_AIR && 
+                            world[i][j][k] != World.TYPE_WATER &&
+                            world[i][j][k-1] == World.TYPE_SAND){
+                             world[i][j][k] = 1234;
+                        }
+                    }catch(Exception e){
+
+                    }
+
+                }
+            }
+        }
+        for(int i = 0; i < length; i++){
+            for(int j = 0; j < width; j++){
+                for(int k = sealvl-10; k < height; k++){ 
+                    try{
+                        if(world[i][j][k] == 1234){
+                             world[i][j][k] = World.TYPE_SAND;
+                        }
+                    }catch(Exception e){
+
+                    }
+
+                }
+            }
+        }
+        
     }
     public void plantTrees(){
         
