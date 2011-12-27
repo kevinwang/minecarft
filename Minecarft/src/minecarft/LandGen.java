@@ -127,7 +127,6 @@ public class LandGen {
                 if(b){levels++;}
             }
             sealvl=tmp;
-            System.out.println(sealvl);
         }
     }
     
