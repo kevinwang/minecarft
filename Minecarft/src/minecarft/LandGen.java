@@ -34,7 +34,7 @@ public class LandGen {
     private int tonofstone = 50;
     private int tonofdirt = 5;
     private int[][][] world;
-    
+    int LAVA = World.TYPE_WATER;
     public LandGen(int length, int width, int height){
         Random r = new Random();
         world = new int[length+1][width+1][height+1];
@@ -185,7 +185,7 @@ public class LandGen {
                 }
             }
         }
-        for(int h = 0; h < 400; h++){
+        for(int h = 0; h < 300; h++){
             for(int i = 1; i < length - 1; i++){
                 for(int j = 1; j < width - 1; j++){
                     for(int k = 1; k < sealvl + 20; k++){
@@ -217,19 +217,19 @@ public class LandGen {
             }
         }
         //thicker tunnels
-        for(int h = 0; h < 4; h++){
+        for(int h = 0; h < 5; h++){
             for(int i = 0; i < length; i++){
                 for(int j = 0; j < width; j++){
                     for(int k = 0; k < height; k++){ 
                         try{
-                            if(world[i][j][k] > 1 && ( 
-                                world[i-1][j][k] == 9002 ||
-                                world[i][j-1][k] == 9002 ||
-                                world[i][j][k-1] == 9002 ||
-                                world[i+1][j][k] == 9002 ||
-                                world[i][j+1][k] == 9002 ||
-                                world[i][j][k+1] == 9002 )){
-                                 world[i][j][k] = 9003;
+                            if(
+                                world[i-1][j][k] > 9000 ||
+                                world[i][j-1][k] > 9000 ||
+                                world[i][j][k-1] > 9000 ||
+                                world[i+1][j][k] > 9000 ||
+                                world[i][j+1][k] > 9000 ||
+                                world[i][j][k+1] > 9000 ){
+                                 world[i][j][k] = 8999;
                             }
                         }catch(Exception e){                    
                         }                
@@ -241,7 +241,7 @@ public class LandGen {
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 for(int k = 0; k < height; k++){               
-                    if(world[i][j][k] == 9001 || world[i][j][k] == 9002 || world[i][j][k] == 9003){
+                    if(world[i][j][k] >= 8999){
                         world[i][j][k] = World.TYPE_AIR;
                     }
                 }
@@ -269,8 +269,28 @@ public class LandGen {
             }
         }
     }
-    public void addLava(){}
-    public void plantTrees(){}
+    public void addLava(){
+        int tmp = 0;
+        int levels = 0;
+        boolean b = false;
+        for(int k = 1; k < height; k++){
+            if(levels < 13){
+                for(int i = 0; i < length; i++){
+                    for(int j = 0; j < width; j++){
+                        if(world[i][j][k] == 0){
+                            world[i][j][k] = LAVA;
+                            b=true;
+                            if(k>tmp){tmp=k;}
+                        }
+                    }
+                }
+                if(b){levels++;}
+            }
+        }
+    }
+    public void plantTrees(){
+        
+    }
     public int[][] perlinNoise(int a){
         Random r = new Random();
         int [][] ret,tmp;
