@@ -34,7 +34,7 @@ public class LandGen {
     private int tonofstone = 50;
     private int tonofdirt = 5;
     private int[][][] world;
-    int LAVA = World.TYPE_WATER;
+    
     public LandGen(int length, int width, int height){
         Random r = new Random();
         world = new int[length+1][width+1][height+1];
@@ -127,6 +127,7 @@ public class LandGen {
                 if(b){levels++;}
             }
             sealvl=tmp;
+//            System.out.println(sealvl);
         }
     }
     
@@ -277,7 +278,7 @@ public class LandGen {
                 for(int i = 0; i < length; i++){
                     for(int j = 0; j < width; j++){
                         if(world[i][j][k] == 0){
-                            world[i][j][k] = LAVA;
+                            world[i][j][k] = World.TYPE_LAVA;
                             b=true;
                             if(k>tmp){tmp=k;}
                         }
