@@ -177,29 +177,65 @@ public class LandGen {
                             if(r.nextInt(10000) == 1){
                                 world[i][j][k] = 9001;
                             }
+                            if(r.nextInt(1000) == 1){
+                                world[i][j][k] = 9004;
+                            }
                         }
                     }    
                 }
             }
         }
-        //thicker tunnel
-        for(int i = 0; i < length; i++){
-            for(int j = 0; j < width; j++){
-                for(int k = 0; k < height; k++){ 
-                    try{
-                        if(world[i][j][k] != 0 && ( 
-                            world[i-1][j][k] == 9002 ||
-                            world[i][j-1][k] == 9002 ||
-                            world[i][j][k-1] == 9002 ||
-                            world[i+1][j][k] == 9002 ||
-                            world[i][j+1][k] == 9002 ||
-                            world[i][j][k+1] == 9002)){
-                            world[i][j][k] = 9003;
+        for(int h = 0; h < 400; h++){
+            for(int i = 1; i < length - 1; i++){
+                for(int j = 1; j < width - 1; j++){
+                    for(int k = 1; k < sealvl + 20; k++){
+                        if(world[i][j][k] == 9004){
+                            switch(r.nextInt(28)+1){
+                                case  1:case 2:
+                                    world[i][j][k-1] = 9004;
+                                    break;
+                                case 3:case  4:case  5:case  6:case  7:case  8:
+                                    world[i-1][j][k] = 9004;
+                                    break;
+                                case  9:case 10:case 11:case 12:case 13:case 14:
+                                    world[i+1][j][k] = 9004;
+                                    break;
+                                case 15:case 16:case 17:case 18:case 19:case 20:
+                                    world[i][j+1][k] = 9004;
+                                    break;
+                                case 21:case 22:case 23:case 24:case 25:case 26:
+                                    world[i][j-1][k] = 9004;
+                                    break;
+                                case 27:case 28:
+                                    world[i][j][k+1] = 9004;
+                                    break;
+                            }
+                            world[i][j][k] = 9002;
                         }
-                    }catch(Exception e){                    
-                    }                
-              }
-           }
+                    }
+                }
+            }
+        }
+        //thicker tunnels
+        for(int h = 0; h < 4; h++){
+            for(int i = 0; i < length; i++){
+                for(int j = 0; j < width; j++){
+                    for(int k = 0; k < height; k++){ 
+                        try{
+                            if(world[i][j][k] > 1 && ( 
+                                world[i-1][j][k] == 9002 ||
+                                world[i][j-1][k] == 9002 ||
+                                world[i][j][k-1] == 9002 ||
+                                world[i+1][j][k] == 9002 ||
+                                world[i][j+1][k] == 9002 ||
+                                world[i][j][k+1] == 9002 )){
+                                 world[i][j][k] = 9003;
+                            }
+                        }catch(Exception e){                    
+                        }                
+                    }
+                }
+            }
         }
         //air
         for(int i = 0; i < length; i++){
