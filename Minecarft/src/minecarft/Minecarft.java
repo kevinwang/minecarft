@@ -43,7 +43,7 @@ public class Minecarft {
     
     public static final float MOUSE_SENSITIVITY = 0.1f;
     public static final float BLOCK_SIZE = 0.15f;
-    public static final float RENDER_DISTANCE = 10.0f;
+    public static final float RENDER_DISTANCE = 5.0f;
     
     private Player player;
     

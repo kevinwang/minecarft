@@ -34,9 +34,16 @@ public class LandGen {
     private int tonofstone = 50;
     private int tonofdirt = 5;
     private int[][][] world;
-    
+    Random r = new Random();
+    /*
+     * Magic Numbers (used internally)
+     * 8999 - tunnel thicken temp
+     * 9001 - vertical erosion source blocks
+     * 9002 - eroded blocks
+     * 9004 - horizontal erosion source blocks
+     * 1234 - sand temp
+     */
     public LandGen(int length, int width, int height){
-        Random r = new Random();
         world = new int[length+1][width+1][height+1];
         this.length = length;
         this.width = width;
@@ -134,23 +141,22 @@ public class LandGen {
         }
     }
     private void erodeLandscape(){
-        Random r = new Random();
         int a,b,c;
         //setting erosion source blocks
         for(int i = 0; i < 8; i++){
             a = r.nextInt(length);
             b = r.nextInt(width);
             c = sealvl + 8 +r.nextInt(10);
-            world[a][b][c] = 9001; //erosion magic number
+            world[a][b][c] = 9001; 
         }
         for(int i = 0; i < 8; i++){
             a = r.nextInt(length);
             b = r.nextInt(width);
             c = sealvl - 4 - r.nextInt(10);
-            world[a][b][c] = 9001; //erosion magic number
+            world[a][b][c] = 9001; 
         }
         //eroding
-        for(int h = 0; h < 300; h++){
+        for(int h = 0; h < 500; h++){
             for(int i = 1; i < length - 1; i++){
                 for(int j = 1; j < width - 1; j++){
                     for(int k = 1; k < sealvl + 20; k++){
@@ -273,7 +279,6 @@ public class LandGen {
                     }catch(Exception e){
                         
                     }
-                    
                 }
             }
         }
@@ -314,16 +319,14 @@ public class LandGen {
                                  world[i][j][k] = 3;
                             }
                         }catch(Exception e){
-
                         }
-
                     }
                 }
             }
         }
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
-                for(int k = 0; k < height; k++){ 
+                for(int k = sealvl - 9; k < sealvl + 2; k++){ 
                     try{
                         if(world[i][j][k] != World.TYPE_AIR && 
                             world[i][j][k] != World.TYPE_WATER &&
@@ -331,33 +334,68 @@ public class LandGen {
                              world[i][j][k] = 1234;
                         }
                     }catch(Exception e){
-
                     }
-
                 }
             }
         }
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
-                for(int k = sealvl-10; k < height; k++){ 
+                for(int k = sealvl-10; k < sealvl+3; k++){ 
                     try{
                         if(world[i][j][k] == 1234){
                              world[i][j][k] = World.TYPE_SAND;
                         }
                     }catch(Exception e){
-
                     }
-
                 }
             }
         }
-        
     }
     public void plantTrees(){
-        
+        int count = 0;
+        int h = r.nextInt(11) + 40;
+        while(count < h){ 
+            for(int i = 0; i < length; i++){
+                for(int j = 0; j < width; j++){
+                    for(int k = sealvl+1; k < height; k++){
+                        if(world[i][j][k] == World.TYPE_DIRT &&
+                            world[i][j][k+1] == World.TYPE_AIR &&
+                            world[i][j][k+2] == World.TYPE_AIR &&
+                            world[i][j][k+3] == World.TYPE_AIR &&
+                            world[i][j][k+4] == World.TYPE_AIR &&
+                            world[i][j][k+5] == World.TYPE_AIR &&
+                            r.nextInt(30) == 0){
+                                world[i][j][k+1] = World.TYPE_WOOD;
+                                int treeh = 3 + r.nextInt(3);
+                                world[i-1][j][k+5+treeh] = World.TYPE_LEAVES;
+                                world[i+1][j][k+5+treeh] = World.TYPE_LEAVES;
+                                world[i][j-1][k+5+treeh] = World.TYPE_LEAVES;
+                                world[i][j+1][k+5+treeh] = World.TYPE_LEAVES;
+                                for(int l = -1; l <= 1; l++){
+                                    for(int m = -1; m <= 1; m++){
+                                        world[l][m][k+4+treeh] = World.TYPE_LEAVES;
+                                    }
+                                }
+                                for(int n = 0; n < 2; n++){
+                                    for(int l = -2; l <= 2; l++){
+                                        for(int m = -2; m <= 2; m++){
+                                            world[l][m][k+2+n+treeh] = World.TYPE_LEAVES;
+                                        }
+                                    }
+                                }
+                                for(int l = 0; l < treeh; l++){
+                                    world[i][j][k+l+2] = World.TYPE_WOOD;
+                                }
+                                for(int l = 1; l < 5; l++){
+                                    world[i][j][k+l+2+treeh] = World.TYPE_WOOD;
+                                }
+                        }
+                    }
+                }
+            }
+        }
     }
     public int[][] perlinNoise(int a){
-        Random r = new Random();
         int [][] ret,tmp;
         tmp = ret = new int[length][width];
         for(int h = a+2; h > 0; h--){ //buncha iterations                                                
@@ -373,7 +411,7 @@ public class LandGen {
                     if(n<0){n=0;}
                     if(o>length){o=length;}
                     if(p>width){p=width;}
-                    int q = r.nextInt(h/a +1);
+                    int q = r.nextInt(h/a+1);
                     for(int k = m; k < o; k++){
                         for(int l = n; l < p; l++){
                             tmp[k][l] += q;
