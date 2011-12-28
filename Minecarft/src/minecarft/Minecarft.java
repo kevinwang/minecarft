@@ -61,6 +61,8 @@ public class Minecarft {
     private Texture woodTexture;
 
     public void start() {
+        LightingController.calculateLighting();
+
         try {
             DisplayMode[] modes = Display.getAvailableDisplayModes();
             boolean isDisplayConfigured = false;
@@ -208,18 +210,18 @@ public class Minecarft {
                     Block block = blocks[z][x][y];
                     if (block.getType() != World.TYPE_AIR && world.isVisible(x, y, z)) {
                         if (block.getType() == World.TYPE_DIRT && (y == World.Y - 1 || blocks[z][x][y + 1].getType() == World.TYPE_AIR)) {
-                            drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE, World.TYPE_DIRT_GRASS);
+                            drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE, World.TYPE_DIRT_GRASS, block.getBrightness());
                         }
                         else {
-                            drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE, block.getType());
-}
+                            drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE, block.getType(), block.getBrightness());
+                        }
                     }
                 }
             }
         }
     }
 
-    public void drawCube(float x, float y, float z, int type) {
+    public void drawCube(float x, float y, float z, int type, int brightness) {
         if (Math.sqrt((player.getPosition().x + x) * (player.getPosition().x - -x) +
                 (player.getPosition().y + y) * (player.getPosition().y - -y) +
                 (player.getPosition().z + z) * (player.getPosition().z - -z)) > RENDER_DISTANCE) {
@@ -260,9 +262,10 @@ public class Minecarft {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         
         glBegin(GL_QUADS);		// Draw The Cube Using quads
+
+        glColor3f(brightness / 8.0f, brightness / 8.0f, brightness / 8.0f);
         
         if (player.getPosition().y < -y + BLOCK_SIZE) {
-            glColor3f(1.0f, 1.0f, 1.0f);
             glTexCoord2f(0.0f, 0.0f);
             glVertex3f(x + BLOCK_SIZE / 2, y + BLOCK_SIZE, z - BLOCK_SIZE / 2);	// Top Right Of The Quad (Top)
             glTexCoord2f(0.0f, 1.0f);

@@ -76,11 +76,12 @@ public class LandGen {
         makeBeach();
         System.out.println("Planting trees...");
         plantTrees();
+
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
-                for (int k = 0; k < width; k++) {
-                    if (world[i][j][k] == 1235) {
-                        blocks[i][j][k] = new Block(World.TYPE_AIR, Block.EMITS_LIGHT);
+                for (int k = 0; k < height; k++) {
+                    if (world[i][j][k] == World.TYPE_AIR && k > sealvl) {
+                        blocks[i][j][k] = new Block(world[i][j][k], Block.DOES_EMIT_LIGHT);
                     }
                     else {
                         blocks[i][j][k] = new Block(world[i][j][k], Block.DOES_NOT_EMIT_LIGHT);
