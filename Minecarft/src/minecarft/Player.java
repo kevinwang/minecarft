@@ -40,7 +40,7 @@ public class Player {
     private float vStrafe = 0.0f;
     private float vY = 0.0f;
     
-    private boolean noclip = false;
+    private boolean noclip = true;
     
     private World world;
     

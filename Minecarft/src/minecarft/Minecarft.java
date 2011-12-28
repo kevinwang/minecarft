@@ -43,7 +43,8 @@ public class Minecarft {
     
     public static final float MOUSE_SENSITIVITY = 0.1f;
     public static final float BLOCK_SIZE = 0.15f;
-    public static final float RENDER_DISTANCE = 50.0f;
+    public static final float[] RENDER_DISTANCES = {5.0f, 10.0f, 20.0f, 9000.0f};
+    private int renderDistanceIndex = 0;
     
     private Player player;
     
@@ -151,6 +152,8 @@ public class Minecarft {
 
         Mouse.setGrabbed(true);
 
+        boolean lastF = false;
+
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             time = Sys.getTime();
             dt = (time - lastTime) / 1000.0f;
@@ -186,6 +189,15 @@ public class Minecarft {
             }
             else {
                 player.applyGravity();
+            }
+            if (Keyboard.isKeyDown((Keyboard.KEY_F))) {
+                if (!lastF) {
+                    renderDistanceIndex = renderDistanceIndex == RENDER_DISTANCES.length - 1 ? 0 : renderDistanceIndex + 1;
+                    lastF = true;
+                }
+            }
+            else {
+                lastF = false;
             }
 
             // Begin drawing
@@ -224,7 +236,7 @@ public class Minecarft {
     public void drawCube(float x, float y, float z, int type, int brightness) {
         if (Math.sqrt((player.getPosition().x + x) * (player.getPosition().x - -x) +
                 (player.getPosition().y + y) * (player.getPosition().y - -y) +
-                (player.getPosition().z + z) * (player.getPosition().z - -z)) > RENDER_DISTANCE) {
+                (player.getPosition().z + z) * (player.getPosition().z - -z)) > RENDER_DISTANCES[renderDistanceIndex]) {
             return;
         }
         

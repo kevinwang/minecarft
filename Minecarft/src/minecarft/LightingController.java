@@ -20,7 +20,7 @@ public class LightingController {
             for (int x = 0; x < World.X; x++) {
                 for (int y = 0; y < World.Y; y++) {
                     if (world[z][x][y].isLightEmitter()) {
-                        brightnesses[z][x][y] = 8;
+                        brightnesses[z][x][y] = 9;
                     }
                     else {
                         brightnesses[z][x][y] = -1000;
