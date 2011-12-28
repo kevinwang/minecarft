@@ -201,17 +201,17 @@ public class Minecarft {
     }
     
     public void drawWorld() {
-        int[][][] blocks = world.getWorld();
+        Block[][][] blocks = world.getWorld();
         for (int z = 0; z < blocks.length; z++) {
             for (int x = 0; x < blocks[0].length; x++) {
                 for (int y = 0; y < blocks[0][0].length; y++) {
-                    int block = blocks[z][x][y];
-                    if (block != World.TYPE_AIR && world.isVisible(x, y, z)) {
-                        if (block == World.TYPE_DIRT && (y == World.Y - 1 || blocks[z][x][y + 1] == World.TYPE_AIR)) {
+                    Block block = blocks[z][x][y];
+                    if (block.getType() != World.TYPE_AIR && world.isVisible(x, y, z)) {
+                        if (block.getType() == World.TYPE_DIRT && (y == World.Y - 1 || blocks[z][x][y + 1].getType() == World.TYPE_AIR)) {
                             drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE, World.TYPE_DIRT_GRASS);
                         }
                         else {
-                            drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE, block);
+                            drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE, block.getType());
 }
                     }
                 }

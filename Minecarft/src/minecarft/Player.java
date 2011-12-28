@@ -119,7 +119,7 @@ public class Player {
             int arrayZ = (int) (position.z * (1.0f / Minecarft.BLOCK_SIZE));
             int arrayX = (int) (-position.x * (1.0f / Minecarft.BLOCK_SIZE));
             int arrayY = (int) ((-position.y - Minecarft.BLOCK_SIZE - PLAYER_HEIGHT) * (1.0f / Minecarft.BLOCK_SIZE));
-            return world.getWorld()[arrayZ][arrayX][arrayY] != 0;
+            return world.getWorld()[arrayZ][arrayX][arrayY].getType() != World.TYPE_AIR;
         } catch (ArrayIndexOutOfBoundsException e) {
             return false;
         }

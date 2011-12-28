@@ -34,6 +34,7 @@ public class LandGen {
     private int tonofstone = 50;
     private int tonofdirt = 5;
     private int[][][] world;
+    private Block[][][] blocks;
     Random r = new Random();
     /*
      * Magic Numbers (used internally)
@@ -42,9 +43,11 @@ public class LandGen {
      * 9002 - eroded blocks
      * 9004 - horizontal erosion source blocks
      * 1234 - sand temp
+     * 1235 - original air block
      */
     public LandGen(int length, int width, int height){
-        world = new int[length+1][width+1][height+1];
+        world = new int[length][width][height];
+        blocks = new Block[length][width][height];
         this.length = length;
         this.width = width;
         this.height = height;
@@ -73,6 +76,18 @@ public class LandGen {
         makeBeach();
         System.out.println("Planting trees...");
         plantTrees();
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < width; j++) {
+                for (int k = 0; k < width; k++) {
+                    if (world[i][j][k] == 1235) {
+                        blocks[i][j][k] = new Block(World.TYPE_AIR, Block.EMITS_LIGHT);
+                    }
+                    else {
+                        blocks[i][j][k] = new Block(world[i][j][k], Block.DOES_NOT_EMIT_LIGHT);
+                    }
+                }
+            }
+        }
     }
     
     private void placeBedrock(){
@@ -425,7 +440,7 @@ public class LandGen {
         return ret;
     }
     
-    public int[][][] getWorld(){
-        return world;
+    public Block[][][] getWorld() {
+        return blocks;
     }
 }
