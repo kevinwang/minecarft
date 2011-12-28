@@ -43,7 +43,7 @@ public class Minecarft {
     
     public static final float MOUSE_SENSITIVITY = 0.1f;
     public static final float BLOCK_SIZE = 0.15f;
-    public static final float RENDER_DISTANCE = 5.0f;
+    public static final float RENDER_DISTANCE = 50.0f;
     
     private Player player;
     
@@ -57,6 +57,8 @@ public class Minecarft {
     private Texture lavaTexture;
     private Texture grassTexture;
     private Texture bedrockTexture;
+    private Texture leavesTexture;
+    private Texture woodTexture;
 
     public void start() {
         try {
@@ -115,17 +117,23 @@ public class Minecarft {
     }
     
     public void initTextures() {
+        /*
         glEnable(GL_TEXTURE_2D);
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); 
+        */
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
         try {
             stoneTexture = TextureLoader.getTexture("PNG", new FileInputStream("stone.png"));
             dirtTexture = TextureLoader.getTexture("PNG", new FileInputStream("dirt.png"));
             sandTexture = TextureLoader.getTexture("PNG", new FileInputStream("sand.png"));
+            leavesTexture = TextureLoader.getTexture("PNG", new FileInputStream("leaves.png"));
             dirtGrassTexture = TextureLoader.getTexture("PNG", new FileInputStream("dirt_grass.png"));
             waterTexture = TextureLoader.getTexture("PNG", new FileInputStream("water.png"));
             lavaTexture = TextureLoader.getTexture("PNG", new FileInputStream("lava.png"));
             grassTexture = TextureLoader.getTexture("PNG", new FileInputStream("grass.png"));
             bedrockTexture = TextureLoader.getTexture("PNG", new FileInputStream("bedrock.png"));
+            woodTexture = TextureLoader.getTexture("PNG", new FileInputStream("wood.png"));
         } catch (Exception e) {
             System.err.println("Error! Could not load textures. Exiting.");
             System.exit(2);
@@ -227,6 +235,12 @@ public class Minecarft {
                 break;
             case World.TYPE_SAND:
                 sandTexture.bind();
+                break;
+            case World.TYPE_WOOD:
+                woodTexture.bind();
+                break;
+            case World.TYPE_LEAVES:
+                leavesTexture.bind();
                 break;
             case World.TYPE_WATER:
                 waterTexture.bind();
