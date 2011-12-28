@@ -352,44 +352,41 @@ public class LandGen {
         }
     }
     public void plantTrees(){
-        int count = 0;
-        int h = r.nextInt(11) + 40;
-        while(count < h){ 
-            for(int i = 0; i < length; i++){
-                for(int j = 0; j < width; j++){
-                    for(int k = sealvl+1; k < height; k++){
-                        if(world[i][j][k] == World.TYPE_DIRT &&
-                            world[i][j][k+1] == World.TYPE_AIR &&
-                            world[i][j][k+2] == World.TYPE_AIR &&
-                            world[i][j][k+3] == World.TYPE_AIR &&
-                            world[i][j][k+4] == World.TYPE_AIR &&
-                            world[i][j][k+5] == World.TYPE_AIR &&
-                            r.nextInt(30) == 0){
-                                world[i][j][k+1] = World.TYPE_WOOD;
-                                int treeh = 3 + r.nextInt(3);
-                                world[i-1][j][k+5+treeh] = World.TYPE_LEAVES;
-                                world[i+1][j][k+5+treeh] = World.TYPE_LEAVES;
-                                world[i][j-1][k+5+treeh] = World.TYPE_LEAVES;
-                                world[i][j+1][k+5+treeh] = World.TYPE_LEAVES;
-                                for(int l = -1; l <= 1; l++){
-                                    for(int m = -1; m <= 1; m++){
-                                        world[l][m][k+4+treeh] = World.TYPE_LEAVES;
+        for(int i = 3; i < length-3; i++){
+            for(int j = 3; j < width-3; j++){
+                for(int k = sealvl+1; k < height; k++){
+                    if(r.nextInt(100) == 0 &&
+                        world[i][j][k] == World.TYPE_DIRT &&
+                        world[i][j][k+1] == World.TYPE_AIR &&
+                        world[i][j][k+2] == World.TYPE_AIR &&
+                        world[i][j][k+3] == World.TYPE_AIR &&
+                        world[i][j][k+4] == World.TYPE_AIR &&
+                        world[i][j][k+5] == World.TYPE_AIR){
+                            world[i][j][k+1] = World.TYPE_WOOD;
+                            int treeh = 2 + r.nextInt(3);
+                            world[i-1][j][k+5+treeh] = World.TYPE_LEAVES;
+                            world[i+1][j][k+5+treeh] = World.TYPE_LEAVES;
+                            world[i][j-1][k+5+treeh] = World.TYPE_LEAVES;
+                            world[i][j+1][k+5+treeh] = World.TYPE_LEAVES;
+                            world[i][j][k+5+treeh] = World.TYPE_LEAVES;
+                            for(int l = -1; l <= 1; l++){
+                                for(int m = -1; m <= 1; m++){
+                                    world[i+l][j+m][k+4+treeh] = World.TYPE_LEAVES;
+                                }
+                            }
+                            for(int n = 0; n < 2; n++){
+                                for(int l = -2; l <= 2; l++){
+                                    for(int m = -2; m <= 2; m++){
+                                        world[i+l][j+m][k+2+n+treeh] = World.TYPE_LEAVES;
                                     }
                                 }
-                                for(int n = 0; n < 2; n++){
-                                    for(int l = -2; l <= 2; l++){
-                                        for(int m = -2; m <= 2; m++){
-                                            world[l][m][k+2+n+treeh] = World.TYPE_LEAVES;
-                                        }
-                                    }
-                                }
-                                for(int l = 0; l < treeh; l++){
-                                    world[i][j][k+l+2] = World.TYPE_WOOD;
-                                }
-                                for(int l = 1; l < 5; l++){
-                                    world[i][j][k+l+2+treeh] = World.TYPE_WOOD;
-                                }
-                        }
+                            }
+                            for(int l = 0; l < treeh; l++){
+                                world[i][j][k+l+2] = World.TYPE_WOOD;
+                            }
+                            for(int l = 1; l < 4; l++){
+                                world[i][j][k+l+1+treeh] = World.TYPE_WOOD;
+                            }
                     }
                 }
             }
