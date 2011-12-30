@@ -36,8 +36,8 @@ import static org.lwjgl.opengl.GL11.*;
  * @author Kevin Wang
  */
 public class Minecarft {
-    public static final int DISPLAY_WIDTH = 1440;
-    public static final int DISPLAY_HEIGHT = 900;
+    public static final int DISPLAY_WIDTH = 800;
+    public static final int DISPLAY_HEIGHT = 600;
     public static final int DISPLAY_FREQUENCY = 60;
     public static final boolean DISPLAY_FULLSCREEN = false;
     
