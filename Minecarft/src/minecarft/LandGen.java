@@ -85,6 +85,9 @@ public class LandGen {
         l.setProgressLabel("Planting trees...");
         plantTrees();
         l.incrementProgressBar();
+        l.setProgressLabel("Housekeeping...");
+        finalCleanup();
+        l.incrementProgressBar();
 
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
@@ -413,6 +416,27 @@ public class LandGen {
                             for(int l = 1; l < 4; l++){
                                 world[i][j][k+l+1+treeh] = Block.TYPE_WOOD;
                             }
+                    }
+                }
+            }
+        }
+    }
+    public void finalCleanup(){
+        for(int i = 1; i < length-1; i++){
+            for(int j = 1; j < width-1; j++){
+                for(int k = sealvl - 10; k < sealvl+1; k++){
+                    if(world[i][j][k] == Block.TYPE_WATER){
+                        if(world[i-1][j][k] == Block.TYPE_AIR ||
+                        world[i+1][j][k] == Block.TYPE_AIR ||
+                        world[i][j-1][k] == Block.TYPE_AIR ||
+                        world[i][j+1][k] == Block.TYPE_AIR){
+                            world[i][j][k] = Block.TYPE_SAND;
+                        }
+                        if(world[i][j][k-1] == Block.TYPE_AIR){
+                            for(int l = k; l == Block.TYPE_AIR; l--){
+                                world[i][j][l] = Block.TYPE_SAND;
+                            }
+                        }
                     }
                 }
             }
