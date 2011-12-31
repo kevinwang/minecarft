@@ -95,7 +95,7 @@ public class Minecarft {
         glDepthFunc(GL_LEQUAL);						// The Type Of Depth Testing To Do
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
         
-        player = new Player(-16.0f, -20.0f, 16.0f);
+        player = new Player(-16.0f, -13.0f, 16.0f);
         
         initTextures();
 
@@ -205,9 +205,9 @@ public class Minecarft {
             for (int x = 0; x < blocks[0].length; x++) {
                 for (int y = 0; y < blocks[0][0].length; y++) {
                     Block block = blocks[z][x][y];
-                    if (block.getType() != World.TYPE_AIR && world.isVisible(x, y, z)) {
-                        if (block.getType() == World.TYPE_DIRT && (y == World.Y - 1 || blocks[z][x][y + 1].getType() == World.TYPE_AIR)) {
-                            drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE, World.TYPE_DIRT_GRASS, block.getBrightness());
+                    if (block.getType() != Block.TYPE_AIR && world.isVisible(x, y, z)) {
+                        if (block.getType() == Block.TYPE_DIRT && (y == World.Y - 1 || blocks[z][x][y + 1].getType() == Block.TYPE_AIR)) {
+                            drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE, Block.TYPE_DIRT_GRASS, block.getBrightness());
                         }
                         else {
                             drawCube(x * BLOCK_SIZE, y * BLOCK_SIZE, -z * BLOCK_SIZE, block.getType(), block.getBrightness());
@@ -226,31 +226,31 @@ public class Minecarft {
         }
         
         switch (type) {
-            case World.TYPE_STONE:
+            case Block.TYPE_STONE:
                 stoneTexture.bind();
                 break;
-            case World.TYPE_DIRT:
+            case Block.TYPE_DIRT:
                 dirtTexture.bind();
                 break;
-            case World.TYPE_SAND:
+            case Block.TYPE_SAND:
                 sandTexture.bind();
                 break;
-            case World.TYPE_WOOD:
+            case Block.TYPE_WOOD:
                 woodTexture.bind();
                 break;
-            case World.TYPE_LEAVES:
+            case Block.TYPE_LEAVES:
                 leavesTexture.bind();
                 break;
-            case World.TYPE_WATER:
+            case Block.TYPE_WATER:
                 waterTexture.bind();
                 break;
-            case World.TYPE_LAVA:
+            case Block.TYPE_LAVA:
                 lavaTexture.bind();
                 break;
-            case World.TYPE_DIRT_GRASS:
+            case Block.TYPE_DIRT_GRASS:
                 grassTexture.bind();
                 break;
-            case World.TYPE_BEDROCK:
+            case Block.TYPE_BEDROCK:
                 bedrockTexture.bind();
                 break;
         }
@@ -273,7 +273,7 @@ public class Minecarft {
             glVertex3f(x + BLOCK_SIZE/2, y + BLOCK_SIZE, z + BLOCK_SIZE/2);	// Bottom Right Of The Quad (Top)
         }
         
-        if (type == World.TYPE_DIRT_GRASS) {
+        if (type == Block.TYPE_DIRT_GRASS) {
             glEnd();
             dirtTexture.bind();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -292,7 +292,7 @@ public class Minecarft {
             glVertex3f(x + BLOCK_SIZE/2, y, z - BLOCK_SIZE/2);	// Bottom Right Of The Quad (Bottom)
         }
         
-        if (type == World.TYPE_DIRT_GRASS) {
+        if (type == Block.TYPE_DIRT_GRASS) {
             glEnd();
             dirtGrassTexture.bind();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

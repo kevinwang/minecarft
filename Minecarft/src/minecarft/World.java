@@ -29,17 +29,6 @@ public class World {
     public static final int X = 128;
     public static final int Y = 128;
     
-    public static final int TYPE_AIR = 0;
-    public static final int TYPE_STONE = 1;
-    public static final int TYPE_DIRT = 2;
-    public static final int TYPE_SAND = 3;
-    public static final int TYPE_WOOD = 4;
-    public static final int TYPE_LEAVES = 5;
-    public static final int TYPE_WATER = 10;
-    public static final int TYPE_LAVA = 11;
-    public static final int TYPE_DIRT_GRASS = 1336; // Special type for rendering, not in array
-    public static final int TYPE_BEDROCK = 1337;
-    
     private Block[][][] world;
     
     private static World instance;
@@ -61,41 +50,41 @@ public class World {
     }
     
     public boolean isVisible(int x, int y, int z) {
-        if (x - 1 >= 0 && world[z][x - 1][y].getType() == World.TYPE_AIR) {
+        if (x - 1 >= 0 && world[z][x - 1][y].getType() == Block.TYPE_AIR) {
             return true;
         }
-        if (x + 1 < X && world[z][x + 1][y].getType() == World.TYPE_AIR) {
+        if (x + 1 < X && world[z][x + 1][y].getType() == Block.TYPE_AIR) {
             return true;
         }
-        if (y - 1 >= 0 && world[z][x][y - 1].getType() == World.TYPE_AIR) {
+        if (y - 1 >= 0 && world[z][x][y - 1].getType() == Block.TYPE_AIR) {
             return true;
         }
-        if (y + 1 < Y && world[z][x][y + 1].getType() == World.TYPE_AIR) {
+        if (y + 1 < Y && world[z][x][y + 1].getType() == Block.TYPE_AIR) {
             return true;
         }
-        if (z - 1 >= 0 && world[z - 1][x][y].getType() == World.TYPE_AIR) {
+        if (z - 1 >= 0 && world[z - 1][x][y].getType() == Block.TYPE_AIR) {
             return true;
         }
-        if (z + 1 < Z && world[z + 1][x][y].getType() == World.TYPE_AIR) {
+        if (z + 1 < Z && world[z + 1][x][y].getType() == Block.TYPE_AIR) {
             return true;
         }
         
-        if (x - 1 >= 0 && world[z][x - 1][y].getType() == World.TYPE_LEAVES) {
+        if (x - 1 >= 0 && world[z][x - 1][y].getType() == Block.TYPE_LEAVES) {
             return true;
         }
-        if (x + 1 < X && world[z][x + 1][y].getType() == World.TYPE_LEAVES) {
+        if (x + 1 < X && world[z][x + 1][y].getType() == Block.TYPE_LEAVES) {
             return true;
         }
-        if (y - 1 >= 0 && world[z][x][y - 1].getType() == World.TYPE_LEAVES) {
+        if (y - 1 >= 0 && world[z][x][y - 1].getType() == Block.TYPE_LEAVES) {
             return true;
         }
-        if (y + 1 < Y && world[z][x][y + 1].getType() == World.TYPE_LEAVES) {
+        if (y + 1 < Y && world[z][x][y + 1].getType() == Block.TYPE_LEAVES) {
             return true;
         }
-        if (z - 1 >= 0 && world[z - 1][x][y].getType() == World.TYPE_LEAVES) {
+        if (z - 1 >= 0 && world[z - 1][x][y].getType() == Block.TYPE_LEAVES) {
             return true;
         }
-        if (z + 1 < Z && world[z + 1][x][y].getType() == World.TYPE_LEAVES) {
+        if (z + 1 < Z && world[z + 1][x][y].getType() == Block.TYPE_LEAVES) {
             return true;
         }
         
