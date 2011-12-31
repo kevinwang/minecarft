@@ -94,6 +94,9 @@ public class Minecarft {
         glEnable(GL_DEPTH_TEST);						// Enables Depth Testing
         glDepthFunc(GL_LEQUAL);						// The Type Of Depth Testing To Do
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+
+        glAlphaFunc(GL_GREATER, 0.5f);
+        glEnable(GL_ALPHA_TEST);
         
         player = new Player(-16.0f, -13.0f, 16.0f);
         
@@ -105,12 +108,6 @@ public class Minecarft {
     }
     
     private void initTextures() {
-        /*
-        glEnable(GL_TEXTURE_2D);
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); 
-        */
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
         try {
             stoneTexture = TextureLoader.getTexture("PNG", new FileInputStream("stone.png"));
             dirtTexture = TextureLoader.getTexture("PNG", new FileInputStream("dirt.png"));
