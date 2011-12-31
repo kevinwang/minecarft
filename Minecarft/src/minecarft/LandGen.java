@@ -54,7 +54,7 @@ public class LandGen {
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 for(int k = 0; k < height; k++){
-                    world[i][j][k] = World.TYPE_AIR;
+                    world[i][j][k] = Block.TYPE_AIR;
                 }
             }
         }
@@ -89,7 +89,7 @@ public class LandGen {
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
                 for (int k = 0; k < height; k++) {
-                    if (world[i][j][k] == World.TYPE_AIR && k > sealvl) {
+                    if (world[i][j][k] == Block.TYPE_AIR && k > sealvl) {
                         blocks[i][j][k] = new Block(world[i][j][k], Block.DOES_EMIT_LIGHT);
                     }
                     else {
@@ -104,7 +104,7 @@ public class LandGen {
     private void placeBedrock(){
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
-                world[i][j][0] = World.TYPE_BEDROCK;
+                world[i][j][0] = Block.TYPE_BEDROCK;
             }
         }
     }
@@ -113,7 +113,7 @@ public class LandGen {
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 for(int k = 1; k < tonofstone; k++)
-                    world[i][j][k] = World.TYPE_STONE;
+                    world[i][j][k] = Block.TYPE_STONE;
             }
         }
         //perlin noise to top it off
@@ -121,7 +121,7 @@ public class LandGen {
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++){
                 for(int k = tonofstone; k < perlin[i][j]+tonofstone; k++){
-                    world[i][j][k] = World.TYPE_STONE;
+                    world[i][j][k] = Block.TYPE_STONE;
                 }
             }
         }
@@ -138,7 +138,7 @@ public class LandGen {
                 lab:for(int k = tonofstone+1; k < height; k++){
                     if(world[i][j][k] == 0){
                         for(int l = 0; l < perlin[i][j]; l++){
-                            world[i][j][l+k] = World.TYPE_DIRT;
+                            world[i][j][l+k] = Block.TYPE_DIRT;
                         }
                         break lab;
                     }
@@ -155,7 +155,7 @@ public class LandGen {
                 for(int i = 0; i < length; i++){
                     for(int j = 0; j < width; j++){
                         if(world[i][j][k] == 0){
-                            world[i][j][k] = World.TYPE_WATER;
+                            world[i][j][k] = Block.TYPE_WATER;
                             b=true;
                             if(k>tmp){tmp=k;}
                         }
@@ -283,7 +283,7 @@ public class LandGen {
             for(int j = 0; j < width; j++){
                 for(int k = 0; k < height; k++){               
                     if(world[i][j][k] >= 8999){
-                        world[i][j][k] = World.TYPE_AIR;
+                        world[i][j][k] = Block.TYPE_AIR;
                     }
                 }
             }
@@ -294,13 +294,13 @@ public class LandGen {
                 for(int k = 0; k < height; k++){ 
                     try{
                         if(world[i][j][k] != 0 && 
-                            world[i-1][j][k] == World.TYPE_AIR &&
-                            world[i][j-1][k] == World.TYPE_AIR &&
-                            world[i][j][k-1] == World.TYPE_AIR &&
-                            world[i+1][j][k] == World.TYPE_AIR &&
-                            world[i][j+1][k] == World.TYPE_AIR &&
-                            world[i][j][k+1] == World.TYPE_AIR){
-                             world[i][j][k] = World.TYPE_AIR;
+                            world[i-1][j][k] == Block.TYPE_AIR &&
+                            world[i][j-1][k] == Block.TYPE_AIR &&
+                            world[i][j][k-1] == Block.TYPE_AIR &&
+                            world[i+1][j][k] == Block.TYPE_AIR &&
+                            world[i][j+1][k] == Block.TYPE_AIR &&
+                            world[i][j][k+1] == Block.TYPE_AIR){
+                             world[i][j][k] = Block.TYPE_AIR;
                         }
                     }catch(Exception e){
                         
@@ -318,7 +318,7 @@ public class LandGen {
                 for(int i = 0; i < length; i++){
                     for(int j = 0; j < width; j++){
                         if(world[i][j][k] == 0){
-                            world[i][j][k] = World.TYPE_LAVA;
+                            world[i][j][k] = Block.TYPE_LAVA;
                             b=true;
                             if(k>tmp){tmp=k;}
                         }
@@ -334,14 +334,14 @@ public class LandGen {
                 for(int j = 0; j < width; j++){
                     for(int k = sealvl - 10; k < sealvl+1; k++){ 
                         try{
-                            if(world[i][j][k] != World.TYPE_AIR && 
-                                world[i][j][k] != World.TYPE_WATER &&(
-                                world[i-h][j][k] == World.TYPE_WATER ||
-                                world[i][j-h][k] == World.TYPE_WATER ||
-                                world[i][j][k-h] == World.TYPE_WATER ||
-                                world[i+h][j][k] == World.TYPE_WATER ||
-                                world[i][j+h][k] == World.TYPE_WATER ||
-                                world[i][j][k+h] == World.TYPE_WATER)){
+                            if(world[i][j][k] != Block.TYPE_AIR && 
+                                world[i][j][k] != Block.TYPE_WATER &&(
+                                world[i-h][j][k] == Block.TYPE_WATER ||
+                                world[i][j-h][k] == Block.TYPE_WATER ||
+                                world[i][j][k-h] == Block.TYPE_WATER ||
+                                world[i+h][j][k] == Block.TYPE_WATER ||
+                                world[i][j+h][k] == Block.TYPE_WATER ||
+                                world[i][j][k+h] == Block.TYPE_WATER)){
                                  world[i][j][k] = 3;
                             }
                         }catch(Exception e){
@@ -354,9 +354,9 @@ public class LandGen {
             for(int j = 0; j < width; j++){
                 for(int k = sealvl - 9; k < sealvl + 2; k++){ 
                     try{
-                        if(world[i][j][k] != World.TYPE_AIR && 
-                            world[i][j][k] != World.TYPE_WATER &&
-                            world[i][j][k-1] == World.TYPE_SAND){
+                        if(world[i][j][k] != Block.TYPE_AIR && 
+                            world[i][j][k] != Block.TYPE_WATER &&
+                            world[i][j][k-1] == Block.TYPE_SAND){
                              world[i][j][k] = 1234;
                         }
                     }catch(Exception e){
@@ -369,7 +369,7 @@ public class LandGen {
                 for(int k = sealvl-10; k < sealvl+3; k++){ 
                     try{
                         if(world[i][j][k] == 1234){
-                             world[i][j][k] = World.TYPE_SAND;
+                             world[i][j][k] = Block.TYPE_SAND;
                         }
                     }catch(Exception e){
                     }
@@ -382,36 +382,36 @@ public class LandGen {
             for(int j = 3; j < width-3; j++){
                 for(int k = sealvl+1; k < height; k++){
                     if(r.nextInt(100) == 0 &&
-                        world[i][j][k] == World.TYPE_DIRT &&
-                        world[i][j][k+1] == World.TYPE_AIR &&
-                        world[i][j][k+2] == World.TYPE_AIR &&
-                        world[i][j][k+3] == World.TYPE_AIR &&
-                        world[i][j][k+4] == World.TYPE_AIR &&
-                        world[i][j][k+5] == World.TYPE_AIR){
-                            world[i][j][k+1] = World.TYPE_WOOD;
+                        world[i][j][k] == Block.TYPE_DIRT &&
+                        world[i][j][k+1] == Block.TYPE_AIR &&
+                        world[i][j][k+2] == Block.TYPE_AIR &&
+                        world[i][j][k+3] == Block.TYPE_AIR &&
+                        world[i][j][k+4] == Block.TYPE_AIR &&
+                        world[i][j][k+5] == Block.TYPE_AIR){
+                            world[i][j][k+1] = Block.TYPE_WOOD;
                             int treeh = 2 + r.nextInt(3);
-                            world[i-1][j][k+5+treeh] = World.TYPE_LEAVES;
-                            world[i+1][j][k+5+treeh] = World.TYPE_LEAVES;
-                            world[i][j-1][k+5+treeh] = World.TYPE_LEAVES;
-                            world[i][j+1][k+5+treeh] = World.TYPE_LEAVES;
-                            world[i][j][k+5+treeh] = World.TYPE_LEAVES;
+                            world[i-1][j][k+5+treeh] = Block.TYPE_LEAVES;
+                            world[i+1][j][k+5+treeh] = Block.TYPE_LEAVES;
+                            world[i][j-1][k+5+treeh] = Block.TYPE_LEAVES;
+                            world[i][j+1][k+5+treeh] = Block.TYPE_LEAVES;
+                            world[i][j][k+5+treeh] = Block.TYPE_LEAVES;
                             for(int l = -1; l <= 1; l++){
                                 for(int m = -1; m <= 1; m++){
-                                    world[i+l][j+m][k+4+treeh] = World.TYPE_LEAVES;
+                                    world[i+l][j+m][k+4+treeh] = Block.TYPE_LEAVES;
                                 }
                             }
                             for(int n = 0; n < 2; n++){
                                 for(int l = -2; l <= 2; l++){
                                     for(int m = -2; m <= 2; m++){
-                                        world[i+l][j+m][k+2+n+treeh] = World.TYPE_LEAVES;
+                                        world[i+l][j+m][k+2+n+treeh] = Block.TYPE_LEAVES;
                                     }
                                 }
                             }
                             for(int l = 0; l < treeh; l++){
-                                world[i][j][k+l+2] = World.TYPE_WOOD;
+                                world[i][j][k+l+2] = Block.TYPE_WOOD;
                             }
                             for(int l = 1; l < 4; l++){
-                                world[i][j][k+l+1+treeh] = World.TYPE_WOOD;
+                                world[i][j][k+l+1+treeh] = Block.TYPE_WOOD;
                             }
                     }
                 }
