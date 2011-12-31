@@ -99,7 +99,7 @@ public class Launcher extends javax.swing.JFrame {
 
         progressLabel.setText("Loading...");
 
-        progressBar.setMaximum(25);
+        progressBar.setMaximum(26);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
