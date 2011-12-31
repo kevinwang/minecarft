@@ -84,6 +84,7 @@ public class Launcher extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Minecarft Launcher");
+        setResizable(false);
 
         displaySizeLabel.setText("Display size");
 
