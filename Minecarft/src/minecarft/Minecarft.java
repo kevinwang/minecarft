@@ -36,15 +36,13 @@ import static org.lwjgl.opengl.GL11.*;
  * @author Kevin Wang
  */
 public class Minecarft {
-    public static final int DISPLAY_WIDTH = 800;
-    public static final int DISPLAY_HEIGHT = 600;
-    public static final int DISPLAY_FREQUENCY = 60;
-    public static final boolean DISPLAY_FULLSCREEN = false;
-    
     public static final float MOUSE_SENSITIVITY = 0.1f;
     public static final float BLOCK_SIZE = 0.15f;
     public static final float[] RENDER_DISTANCES = {5.0f, 10.0f, 20.0f, 9000.0f};
     private int renderDistanceIndex = 0;
+    
+    private DisplayMode mode;
+    private boolean isFullscreen = false;
     
     private Player player;
     
@@ -60,32 +58,19 @@ public class Minecarft {
     private Texture bedrockTexture;
     private Texture leavesTexture;
     private Texture woodTexture;
+    
+    public Minecarft(DisplayMode mode, boolean isFullscreen) {
+        this.mode = mode;
+        this.isFullscreen = isFullscreen;
+    }
 
     public void start() {
         LightingController.calculateLighting();
+        Launcher.getInstance().close();
 
         try {
-            DisplayMode[] modes = Display.getAvailableDisplayModes();
-            boolean isDisplayConfigured = false;
-            
-            for (int i = 0; i < modes.length; i++) {
-                if (modes[i].getWidth() == DISPLAY_WIDTH && modes[i].getHeight() == DISPLAY_HEIGHT && modes[i].getFrequency() == DISPLAY_FREQUENCY) {
-                    if (DISPLAY_FULLSCREEN) {
-                        Display.setDisplayModeAndFullscreen(modes[i]);
-                    }
-                    else {
-                        Display.setDisplayMode(modes[i]);
-                    }
-                    isDisplayConfigured = true;
-                }
-            }
-            if (!isDisplayConfigured) {
-                if (DISPLAY_FULLSCREEN) {
-                    System.err.println("Fullscreen is not supported on your system at " + DISPLAY_WIDTH + "x" + DISPLAY_HEIGHT + " " + DISPLAY_FREQUENCY + "Hz.\n"
-                            + "Running in windowed mode.");
-                }
-                Display.setDisplayMode(new DisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT));
-            }
+            Display.setDisplayMode(mode);
+            Display.setFullscreen(isFullscreen);
             Display.setTitle("Minecarft");
             Display.create();
         } catch(UnsatisfiedLinkError e) {
@@ -96,11 +81,11 @@ public class Minecarft {
             System.exit(3);
         }
 
-        glViewport(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+        glViewport(0, 0, mode.getWidth(), mode.getHeight());
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        GLU.gluPerspective(45.0f, (float)DISPLAY_WIDTH / (float)DISPLAY_HEIGHT, 0.1f, 100.0f);
+        GLU.gluPerspective(45.0f, (float)mode.getWidth() / (float)mode.getHeight(), 0.1f, 100.0f);
         glMatrixMode(GL_MODELVIEW);
 
         glShadeModel(GL_SMOOTH);						// Enable Smooth Shading
@@ -119,7 +104,7 @@ public class Minecarft {
         Display.destroy();
     }
     
-    public void initTextures() {
+    private void initTextures() {
         /*
         glEnable(GL_TEXTURE_2D);
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); 
@@ -143,7 +128,7 @@ public class Minecarft {
         }
     }
 
-    public void runLoop() {
+    private void runLoop() {
         float dx = 0.0f;
         float dy = 0.0f;
         float dt = 0.0f;
@@ -214,7 +199,7 @@ public class Minecarft {
         }
     }
     
-    public void drawWorld() {
+    private void drawWorld() {
         Block[][][] blocks = world.getWorld();
         for (int z = 0; z < blocks.length; z++) {
             for (int x = 0; x < blocks[0].length; x++) {
@@ -233,7 +218,7 @@ public class Minecarft {
         }
     }
 
-    public void drawCube(float x, float y, float z, int type, int brightness) {
+    private void drawCube(float x, float y, float z, int type, int brightness) {
         if (Math.sqrt((player.getPosition().x + x) * (player.getPosition().x - -x) +
                 (player.getPosition().y + y) * (player.getPosition().y - -y) +
                 (player.getPosition().z + z) * (player.getPosition().z - -z)) > RENDER_DISTANCES[renderDistanceIndex]) {
@@ -365,8 +350,10 @@ public class Minecarft {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Minecarft - by Kevin Wang and Shan Shi");
-        Minecarft minecarft = new Minecarft();
-        minecarft.start();
+        try {
+            Launcher l = Launcher.getInstance();
+            l.setVisible(true);
+        } catch (Exception e) {
+        }
     }
 }

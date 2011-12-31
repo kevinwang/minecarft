@@ -62,20 +62,29 @@ public class LandGen {
     }
     
     private void generate(){
-        System.out.println("Creating land...");
+        Launcher l = Launcher.getInstance();
+        l.setProgressLabel("Creating land...");
         placeBedrock();
+        l.incrementProgressBar();
         placeStone();
+        l.incrementProgressBar();
         placeDirt();
-        System.out.println("Flooding the earth...");
+        l.incrementProgressBar();
+        l.setProgressLabel("Flooding the earth...");
         addWater();
-        System.out.print("Eroding the landscape..");
+        l.incrementProgressBar();
+        l.setProgressLabel("Eroding the landscape...");
         erodeLandscape();
-        System.out.println("\nMelting the earth...");
+        l.incrementProgressBar();
+        l.setProgressLabel("Melting the earth...");
         addLava();
-        System.out.println("Making beaches...");
+        l.incrementProgressBar();
+        l.setProgressLabel("Making beaches...");
         makeBeach();
-        System.out.println("Planting trees...");
+        l.incrementProgressBar();
+        l.setProgressLabel("Planting trees...");
         plantTrees();
+        l.incrementProgressBar();
 
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
@@ -89,6 +98,7 @@ public class LandGen {
                 }
             }
         }
+        l.incrementProgressBar();
     }
     
     private void placeBedrock(){
@@ -209,7 +219,7 @@ public class LandGen {
                 }
             }
             if (h % 100 == 0) {
-                System.out.print(".");
+                Launcher.getInstance().incrementProgressBar();
             }
         }
         //rooms
@@ -244,7 +254,7 @@ public class LandGen {
                 }
             }
             if (h % 100 == 0) {
-                System.out.print(".");
+                Launcher.getInstance().incrementProgressBar();
             }
         }
         //thicker tunnels

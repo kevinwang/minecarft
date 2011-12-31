@@ -1,6 +1,21 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * LightingController.java
+ * Copyright (C) 2011  Kevin Wang and Shan Shi
+ * 
+ * This file is part of Minecarft.
+ * 
+ * Minecarft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Minecarft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Minecarft.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package minecarft;
@@ -13,7 +28,8 @@ public class LightingController {
     private static Block[][][] world = World.getInstance().getWorld();
 
     public static void calculateLighting() {
-        System.out.print("Calculating lighting");
+        Launcher l = Launcher.getInstance();
+        l.setProgressLabel("Calculating lighting...");
 
         int[][][] brightnesses = new int[World.Z][World.X][World.Y];
         for (int z = 0; z < World.Z; z++) {
@@ -61,8 +77,7 @@ public class LightingController {
                     }
                 }
             }
-            System.out.print(".");
+            l.incrementProgressBar();
         }
-        System.out.println();
     }
 }
