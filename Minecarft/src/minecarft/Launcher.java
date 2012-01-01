@@ -20,6 +20,8 @@
 
 package minecarft;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -45,6 +47,13 @@ public class Launcher extends javax.swing.JFrame {
         DisplayMode[] modes;
         try {
             modes = Display.getAvailableDisplayModes();
+            Arrays.sort(modes, new Comparator<DisplayMode>() {
+
+                public int compare(DisplayMode o1, DisplayMode o2) {
+                    return (o2.getWidth() * o2.getHeight() + o2.getBitsPerPixel() + o2.getFrequency())
+                            - (o1.getWidth() * o1.getHeight() + o1.getBitsPerPixel() + o1.getFrequency());
+                }
+            });
         } catch (LWJGLException e) {
             modes = new DisplayMode[0];
         }
