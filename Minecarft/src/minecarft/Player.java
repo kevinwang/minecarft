@@ -1,5 +1,5 @@
 /**
- * CameraController.java
+ * Player.java
  * Copyright (C) 2011  Kevin Wang and Shan Shi
  * 
  * This file is part of Minecarft.
