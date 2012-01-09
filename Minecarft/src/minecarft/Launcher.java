@@ -151,6 +151,8 @@ public class Launcher extends javax.swing.JFrame {
 
     private void startMinecarftButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startMinecarftButtonMouseReleased
         if (startMinecarftButton.isEnabled()) {
+            displaySizeComboBox.setEnabled(false);
+            fullscreenModeCheckBox.setEnabled(false);
             startMinecarftButton.setEnabled(false);
             Thread thread = new Thread(new Runnable() {
 
