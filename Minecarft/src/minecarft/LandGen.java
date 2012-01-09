@@ -261,7 +261,7 @@ public class LandGen {
             }
         }
         //thicker tunnels
-        for(int h = 0; h < 5; h++){
+        for(int h = 0; h < 8; h++){
             for(int i = 0; i < length; i++){
                 for(int j = 0; j < width; j++){
                     for(int k = 0; k < height; k++){ 
