@@ -1,7 +1,6 @@
 Minecarft - Kevin Wang and Shan Shi
 
-Things that will definitely be in the project:
-
+Things that are in the project:
 Landscape generation:
 -Perlin noise for the bottom layer (stone)
 -same procedure for dirt (leave no spaces between dirt and stone)
@@ -13,30 +12,36 @@ Landscape generation:
 Storage of data:
 -3D array of Blocks on memory
 
-Rendering:
--OpenGL
-
-Lava/water Physics:
--spread horizontally for a maximum of 8 blocks from the source block
--spread down infinitely until the water reaches a solid block 
-
-
-
-Things we consider adding if we finish early:
-Character physics:
--legit physics in addition to noclip
-
-Audio:
--OpenAL
-
-Flight simulator:
--to easily and smoothly explore the landscape
+Front end:
+-handled with libraries from LWJGL 2.8.2
 
 Lighting:
 -16 levels of lighting (brightest to no light), nearby light levels will influence the local light level
 -light source blocks (torches) - light spreads out in a sphere, decays with distance
 -light source blocks (top of the world) - light shoots down like a wide laser beam, doesn't decay
 
+Things we might add:
+Character physics:
+-legit physics in addition to noclip
+
+Audio:
+-OpenAL
+
 Enemies:
 -an AI (possibly an implementation of A*) to chase the player if the player is within range
 -attack by touching the player (this also means we will have to implement health, weapons, and armor)
+
+-------------------------------------------------------------------------------------------------------
+
+Classes in the project
+Block
+Terrain generation
+Launcher
+Lighting
+Player/Camera-control
+World
+
+-------------------------------------------------------------------------------------------------------
+
+The project is already done. We will try to use the lab days to make small improvements
+
