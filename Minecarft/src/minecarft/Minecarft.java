@@ -22,7 +22,6 @@ package minecarft;
 
 import java.io.FileInputStream;
 import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureImpl;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -214,7 +213,6 @@ public class Minecarft {
                 }
             }
         }
-        drawSun();
     }
 
     private void drawCube(float x, float y, float z, int type, int brightness) {
@@ -342,51 +340,6 @@ public class Minecarft {
             glTexCoord2f(1.0f, 1.0f);
             glVertex3f(x + BLOCK_SIZE / 2, y, z - BLOCK_SIZE / 2);	// Bottom Right Of The Quad (Right)
         }
-        glEnd();
-    }
-
-    private void drawSun() {
-        int x = -16;
-        int y = 16;
-        int z = -64;
-        int sunRadius = 3;
-
-        TextureImpl.bindNone();
-
-        glBegin(GL_QUADS);		// Draw The Cube Using quads
-
-        glColor3f(1.0f, 1.0f, 1.0f);
-
-        glVertex3f(x + sunRadius, y + sunRadius, z - sunRadius);	// Top Right Of The Quad (Top)
-        glVertex3f(x - sunRadius, y + sunRadius, z - sunRadius);	// Top Left Of The Quad (Top)
-        glVertex3f(x - sunRadius, y + sunRadius, z + sunRadius);	// Bottom Left Of The Quad (Top)
-        glVertex3f(x + sunRadius, y + sunRadius, z + sunRadius);	// Bottom Right Of The Quad (Top)
-
-        glVertex3f(x + sunRadius, y - sunRadius, z + sunRadius);	// Top Right Of The Quad (Bottom)
-        glVertex3f(x - sunRadius, y - sunRadius, z + sunRadius);	// Top Left Of The Quad (Bottom)
-        glVertex3f(x - sunRadius, y - sunRadius, z - sunRadius);	// Bottom Left Of The Quad (Bottom)
-        glVertex3f(x + sunRadius, y - sunRadius, z - sunRadius);	// Bottom Right Of The Quad (Bottom)
-
-        glVertex3f(x + sunRadius, y + sunRadius, z + sunRadius);	// Top Right Of The Quad (Front)
-        glVertex3f(x - sunRadius, y + sunRadius, z + sunRadius);	// Top Left Of The Quad (Front)
-        glVertex3f(x - sunRadius, y - sunRadius, z + sunRadius);	// Bottom Left Of The Quad (Front)
-        glVertex3f(x + sunRadius, y - sunRadius, z + sunRadius);	// Bottom Right Of The Quad (Front)
-
-        glVertex3f(x + sunRadius, y - sunRadius, z - sunRadius);	// Top Right Of The Quad (Back)
-        glVertex3f(x - sunRadius, y - sunRadius, z - sunRadius);	// Top Left Of The Quad (Back)
-        glVertex3f(x - sunRadius, y + sunRadius, z - sunRadius);	// Bottom Left Of The Quad (Back)
-        glVertex3f(x + sunRadius, y + sunRadius, z - sunRadius);	// Bottom Right Of The Quad (Back)
-
-        glVertex3f(x - sunRadius, y + sunRadius, z + sunRadius);	// Top Right Of The Quad (Left)
-        glVertex3f(x - sunRadius, y + sunRadius, z - sunRadius);	// Top Left Of The Quad (Left)
-        glVertex3f(x - sunRadius, y - sunRadius, z - sunRadius);	// Bottom Left Of The Quad (Left)
-        glVertex3f(x - sunRadius, y - sunRadius, z + sunRadius);	// Bottom Right Of The Quad (Left)
-
-        glVertex3f(x + sunRadius, y + sunRadius, z - sunRadius);	// Top Right Of The Quad (Right)
-        glVertex3f(x + sunRadius, y + sunRadius, z + sunRadius);	// Top Left Of The Quad (Right)
-        glVertex3f(x + sunRadius, y - sunRadius, z + sunRadius);	// Bottom Left Of The Quad (Right)
-        glVertex3f(x + sunRadius, y - sunRadius, z - sunRadius);	// Bottom Right Of The Quad (Right)
-
         glEnd();
     }
 
