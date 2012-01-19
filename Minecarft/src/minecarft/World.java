@@ -32,10 +32,17 @@ public class World {
     private Block[][][] world;
     
     private static World instance;
-    
+
     public static World getInstance() {
         if (instance == null) {
             instance = new World();
+        }
+        return instance;
+    }
+
+    public static World getInstance(String savefile) {
+        if (instance == null) {
+            instance = new World(savefile);
         }
         return instance;
     }
@@ -43,6 +50,10 @@ public class World {
     private World() {
         LandGen peniscupcake = new LandGen(Z, X, Y);
         world = peniscupcake.getWorld();
+    }
+
+    private World(String savefile) {
+        world = FileIO.loadMap(savefile);
     }
     
     public Block[][][] getWorld() {

@@ -21,10 +21,13 @@
 package minecarft;
 
 import java.awt.Component;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JFileChooser;
+import java.util.StringTokenizer;
 
 /**
  *
@@ -37,7 +40,6 @@ public class FileIO extends Component {
             String filename = "wangshi.sav";
             FileWriter writer = new FileWriter(new File(filename));
             Block[][][] world = World.getInstance().getWorld();
-            writer.write("z,x,y,type,brightness\n");
             for (int z = 0; z < world.length; z++) {
                 for (int x = 0; x < world[0].length; x++) {
                     for (int y = 0; y < world[0][0].length; y++) {
@@ -48,5 +50,23 @@ public class FileIO extends Component {
             writer.close();
         } catch (IOException e) {
         }
+    }
+
+    public static Block[][][] loadMap(String filename) {
+        Block[][][] world = new Block[World.Z][World.X][World.Y];
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            while (reader.ready()) {
+                StringTokenizer st = new StringTokenizer(reader.readLine(), ",");
+                int z = Integer.parseInt(st.nextToken());
+                int x = Integer.parseInt(st.nextToken());
+                int y = Integer.parseInt(st.nextToken());
+                int type = Integer.parseInt(st.nextToken());
+                int brightness = Integer.parseInt(st.nextToken());
+                world[z][x][y] = new Block(type, brightness);
+            }
+        } catch (IOException e) {
+        }
+        return world;
     }
 }

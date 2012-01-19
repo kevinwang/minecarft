@@ -51,6 +51,11 @@ public class Block {
         }
     }
 
+    public Block(int type, int brightness) {
+        this(type, false);
+        setBrightness(brightness);
+    }
+
     public void setBrightness(int brightness) {
         this.brightness = brightness;
     }

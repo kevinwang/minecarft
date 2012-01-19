@@ -46,7 +46,7 @@ public class Minecarft {
     
     private Player player;
     
-    private World world = World.getInstance();
+    private World world;
     
     private Texture stoneTexture;
     private Texture dirtTexture;
@@ -62,11 +62,19 @@ public class Minecarft {
     public Minecarft(DisplayMode mode, boolean isFullscreen) {
         this.mode = mode;
         this.isFullscreen = isFullscreen;
+        world = World.getInstance();
+        LightingController.calculateLighting();
+        FileIO.saveMap();
+    }
+
+    public Minecarft(DisplayMode mode, boolean isFullscreen, String savefile) {
+        this.mode = mode;
+        this.isFullscreen = isFullscreen;
+        Launcher.getInstance().setProgressLabel("Loading savefile...");
+        world = World.getInstance(savefile);
     }
 
     public void start() {
-        FileIO.saveMap();
-        LightingController.calculateLighting();
         Launcher.getInstance().close();
 
         try {

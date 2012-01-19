@@ -157,7 +157,8 @@ public class Launcher extends javax.swing.JFrame {
             Thread thread = new Thread(new Runnable() {
 
                 public void run() {
-                    Minecarft m = new Minecarft((DisplayMode) displaySizeComboBox.getSelectedItem(), fullscreenModeCheckBox.isSelected());
+                    Minecarft m = new Minecarft((DisplayMode) displaySizeComboBox.getSelectedItem(), fullscreenModeCheckBox.isSelected(), "wangshi.sav");
+                    //Minecarft m = new Minecarft((DisplayMode) displaySizeComboBox.getSelectedItem(), fullscreenModeCheckBox.isSelected());
                     m.start();
                 }
             });
