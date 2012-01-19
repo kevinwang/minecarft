@@ -65,6 +65,7 @@ public class Minecarft {
     }
 
     public void start() {
+        FileIO.saveMap();
         LightingController.calculateLighting();
         Launcher.getInstance().close();
 
