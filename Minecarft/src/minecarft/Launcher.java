@@ -20,8 +20,11 @@
 
 package minecarft;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -83,6 +86,7 @@ public class Launcher extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFileChooser1 = new javax.swing.JFileChooser();
         displaySizeLabel = new javax.swing.JLabel();
         displaySizeComboBox = new javax.swing.JComboBox();
         fullscreenModeCheckBox = new javax.swing.JCheckBox();
@@ -90,6 +94,10 @@ public class Launcher extends javax.swing.JFrame {
         progressLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
         jSeparator1 = new javax.swing.JSeparator();
+        loadButton = new javax.swing.JButton();
+
+        jFileChooser1.setDialogTitle("Load Savefile");
+        jFileChooser1.setFileFilter(new SaveFilter());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Minecarft Launcher");
@@ -110,6 +118,13 @@ public class Launcher extends javax.swing.JFrame {
 
         progressBar.setMaximum(26);
 
+        loadButton.setText("Load Savefile");
+        loadButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                loadButtonMouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -120,7 +135,10 @@ public class Launcher extends javax.swing.JFrame {
                     .addComponent(displaySizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(displaySizeLabel)
                     .addComponent(fullscreenModeCheckBox)
-                    .addComponent(startMinecarftButton)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(startMinecarftButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 156, Short.MAX_VALUE)
+                        .addComponent(loadButton))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                     .addComponent(progressLabel)
                     .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
@@ -136,7 +154,9 @@ public class Launcher extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(fullscreenModeCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(startMinecarftButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(startMinecarftButton)
+                    .addComponent(loadButton))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -151,26 +171,71 @@ public class Launcher extends javax.swing.JFrame {
 
     private void startMinecarftButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startMinecarftButtonMouseReleased
         if (startMinecarftButton.isEnabled()) {
-            displaySizeComboBox.setEnabled(false);
-            fullscreenModeCheckBox.setEnabled(false);
-            startMinecarftButton.setEnabled(false);
-            Thread thread = new Thread(new Runnable() {
-
-                public void run() {
-                    Minecarft m = new Minecarft((DisplayMode) displaySizeComboBox.getSelectedItem(), fullscreenModeCheckBox.isSelected(), "wangshi.sav");
-                    //Minecarft m = new Minecarft((DisplayMode) displaySizeComboBox.getSelectedItem(), fullscreenModeCheckBox.isSelected());
-                    m.start();
-                }
-            });
-            thread.start();
+            startMinecarft(null);
         }
     }//GEN-LAST:event_startMinecarftButtonMouseReleased
 
+    private void loadButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loadButtonMouseReleased
+        int returnVal = jFileChooser1.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            startMinecarft(jFileChooser1.getSelectedFile());
+        }
+    }//GEN-LAST:event_loadButtonMouseReleased
+
+    private class SaveFilter extends FileFilter {
+
+        @Override
+        public boolean accept(File file) {
+            if (file.isDirectory()) {
+                return true;
+            }
+            String filename = file.getName();
+            int i = filename.lastIndexOf(".");
+            if (i > 0 && i < filename.length() - 1) {
+                return filename.substring(i + 1).toLowerCase().equals("sav");
+            }
+            return false;
+        }
+
+        @Override
+        public String getDescription() {
+            return "Minecarft Savefiles";
+        }
+    }
+    
+    private void startMinecarft(final File savefile) {
+        displaySizeComboBox.setEnabled(false);
+        fullscreenModeCheckBox.setEnabled(false);
+        startMinecarftButton.setEnabled(false);
+        loadButton.setEnabled(false);
+        Thread thread;
+        if (savefile != null) {
+            thread = new Thread(new Runnable() {
+
+                public void run() {
+                    Minecarft m = new Minecarft((DisplayMode) displaySizeComboBox.getSelectedItem(), fullscreenModeCheckBox.isSelected(), savefile);
+                    m.start();
+                }
+            });
+        } else {
+            thread = new Thread(new Runnable() {
+                
+                public void run() {
+                    Minecarft m = new Minecarft((DisplayMode) displaySizeComboBox.getSelectedItem(), fullscreenModeCheckBox.isSelected());
+                    m.start();
+                }
+            });
+        }
+        thread.start();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox displaySizeComboBox;
     private javax.swing.JLabel displaySizeLabel;
     private javax.swing.JCheckBox fullscreenModeCheckBox;
+    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton loadButton;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JLabel progressLabel;
     private javax.swing.JButton startMinecarftButton;

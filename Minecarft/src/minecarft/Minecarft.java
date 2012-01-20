@@ -20,6 +20,7 @@
 
 package minecarft;
 
+import java.io.File;
 import java.io.FileInputStream;
 import org.newdawn.slick.opengl.Texture;
 import org.lwjgl.util.glu.GLU;
@@ -67,7 +68,7 @@ public class Minecarft {
         FileIO.saveMap();
     }
 
-    public Minecarft(DisplayMode mode, boolean isFullscreen, String savefile) {
+    public Minecarft(DisplayMode mode, boolean isFullscreen, File savefile) {
         this.mode = mode;
         this.isFullscreen = isFullscreen;
         Launcher.getInstance().setProgressLabel("Loading savefile...");

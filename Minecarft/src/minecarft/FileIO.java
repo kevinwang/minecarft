@@ -26,7 +26,6 @@ import java.io.FileReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import javax.swing.JFileChooser;
 import java.util.StringTokenizer;
 
 /**
@@ -52,10 +51,11 @@ public class FileIO extends Component {
         }
     }
 
-    public static Block[][][] loadMap(String filename) {
+    public static Block[][][] loadMap(File savefile) {
         Block[][][] world = new Block[World.Z][World.X][World.Y];
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            BufferedReader reader = new BufferedReader(new FileReader(savefile));
+            int i = 0;
             while (reader.ready()) {
                 StringTokenizer st = new StringTokenizer(reader.readLine(), ",");
                 int z = Integer.parseInt(st.nextToken());
@@ -64,6 +64,11 @@ public class FileIO extends Component {
                 int type = Integer.parseInt(st.nextToken());
                 int brightness = Integer.parseInt(st.nextToken());
                 world[z][x][y] = new Block(type, brightness);
+                
+                // Increment progress bar every 26th of the savefile (128^3 lines)
+                if (i++ % (2097152 / 26 - 1) == 0) {
+                    Launcher.getInstance().incrementProgressBar();
+                }
             }
         } catch (IOException e) {
         }

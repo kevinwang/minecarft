@@ -20,6 +20,8 @@
 
 package minecarft;
 
+import java.io.File;
+
 /**
  *
  * @author kevin
@@ -40,7 +42,7 @@ public class World {
         return instance;
     }
 
-    public static World getInstance(String savefile) {
+    public static World getInstance(File savefile) {
         if (instance == null) {
             instance = new World(savefile);
         }
@@ -52,7 +54,7 @@ public class World {
         world = peniscupcake.getWorld();
     }
 
-    private World(String savefile) {
+    private World(File savefile) {
         world = FileIO.loadMap(savefile);
     }
     
