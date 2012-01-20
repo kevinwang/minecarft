@@ -34,10 +34,9 @@ import java.util.StringTokenizer;
  */
 public class FileIO extends Component {
 
-    public static void saveMap() {
+    public static void saveMap(File file) {
         try {
-            String filename = "wangshi.sav";
-            FileWriter writer = new FileWriter(new File(filename));
+            FileWriter writer = new FileWriter(file);
             Block[][][] world = World.getInstance().getWorld();
             for (int z = 0; z < world.length; z++) {
                 for (int x = 0; x < world[0].length; x++) {

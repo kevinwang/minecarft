@@ -65,7 +65,6 @@ public class Minecarft {
         this.isFullscreen = isFullscreen;
         world = World.getInstance();
         LightingController.calculateLighting();
-        FileIO.saveMap();
     }
 
     public Minecarft(DisplayMode mode, boolean isFullscreen, File savefile) {
@@ -146,7 +145,7 @@ public class Minecarft {
 
         boolean lastF = false;
 
-        while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+        while (!Display.isCloseRequested()) {
             time = Sys.getTime();
             dt = (time - lastTime) / 1000.0f;
             lastTime = time;
@@ -190,6 +189,15 @@ public class Minecarft {
             }
             else {
                 lastF = false;
+            }
+            
+            if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+                Mouse.setGrabbed(false);
+                PauseMenu pauseMenu = new PauseMenu();
+                pauseMenu.setVisible(true);
+                while (pauseMenu.isValid()) {
+                }
+                Mouse.setGrabbed(true);
             }
 
             // Begin drawing
