@@ -144,6 +144,7 @@ public class Minecarft {
         Mouse.setGrabbed(true);
 
         boolean lastF = false;
+        boolean lastEsc = false;
 
         while (!Display.isCloseRequested()) {
             time = Sys.getTime();
@@ -192,12 +193,18 @@ public class Minecarft {
             }
             
             if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-                Mouse.setGrabbed(false);
-                PauseMenu pauseMenu = new PauseMenu();
-                pauseMenu.setVisible(true);
-                while (pauseMenu.isValid()) {
+                if (!lastEsc) {
+                    Mouse.setGrabbed(false);
+                    PauseMenu pauseMenu = new PauseMenu();
+                    pauseMenu.setVisible(true);
+                    while (pauseMenu.isValid()) {
+                    }
+                    Mouse.setGrabbed(true);
+                    lastEsc = true;
                 }
-                Mouse.setGrabbed(true);
+            }
+            else {
+                lastEsc = false;
             }
 
             // Begin drawing
