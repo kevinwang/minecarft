@@ -193,18 +193,16 @@ public class Minecarft {
             }
             
             if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-                if (!lastEsc) {
+                lastEsc = true;
+            }
+            else {
+                if (lastEsc) {
                     Mouse.setGrabbed(false);
                     PauseMenu pauseMenu = new PauseMenu();
                     pauseMenu.setVisible(true);
-                    while (pauseMenu.isValid()) {
-                    }
                     Mouse.setGrabbed(true);
-                    lastEsc = true;
+                    lastEsc = false;
                 }
-            }
-            else {
-                lastEsc = false;
             }
 
             // Begin drawing
