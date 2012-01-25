@@ -1,5 +1,7 @@
 Minecarft - Kevin Wang and Shan Shi
 
+HOW TO RUN: Run `Minecarft' script in Minecarft/dist/.
+
 Things that are in the project:
 Landscape generation:
 -Perlin noise for the bottom layer (stone)

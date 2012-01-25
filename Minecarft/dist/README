@@ -1,6 +1,7 @@
 Minecarft - Kevin Wang and Shan Shi
 
 Starting Minecarft
+    * Run `Minecarft' script
     * Select "Start Minecarft" to generate a new map.
     * Select "Load Savefile" to load an existing map from a savefile (extension .sav).
 
@@ -10,3 +11,9 @@ Controls
     * F - Toggle render distance
     * Esc - Open pause menu
         * When saving the map, don't forget to make it a .sav file.
+
+Things to notice (all randomly generated!)
+    * Surface terrain (hills, grass, trees, water, sand)
+    * Caves
+    * Lava
+    * Lighting
