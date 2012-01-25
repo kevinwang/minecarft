@@ -1,0 +1,12 @@
+Minecarft - Kevin Wang and Shan Shi
+
+Starting Minecarft
+    * Select "Start Minecarft" to generate a new map.
+    * Select "Load Savefile" to load an existing map from a savefile (extension .sav).
+
+Controls
+    * WASD - Movement
+    * Mouse - Yaw/pitch adjust
+    * F - Toggle render distance
+    * Esc - Open pause menu
+        * When saving the map, don't forget to make it a .sav file.
